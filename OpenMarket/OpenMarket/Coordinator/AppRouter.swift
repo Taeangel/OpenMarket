@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum coinAppRouter: NavigationRouter {
+enum openMarketRouter: NavigationRouter {
   case main
   
   var transition: NavigationTranisitionStyle {
@@ -21,7 +21,7 @@ enum coinAppRouter: NavigationRouter {
   func view() -> some View {
     switch self {
     case .main:
-      ContentView()
+      MainView()
     }
   }
 }
