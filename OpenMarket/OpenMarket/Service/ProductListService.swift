@@ -23,7 +23,6 @@ class ProductListService {
     Provider.shared.requestPublisher(.getProductList())
       .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
         self?.productList = returnedProductList
-        
         print(self?.productList)
       }
       .store(in: &coinSubscription)

@@ -7,25 +7,31 @@
 
 import Foundation
 //https://openmarket.yagom-academy.kr/api/products?page_no=1&items_per_page=20  == getProductList
+//https://openmarket.yagom-academy.kr/api/products/32 == getProduct
 
 enum OpenMarketRequestManager {
 
+  case getProductList(page_no: Int = 1, items_per_page: Int = 20)
+  case getProduct(_ id: Int)
+  
   private var BaseURLString: String {
     return "https://openmarket.yagom-academy.kr/"
   }
-  
-  case getProductList(page_no: Int = 1, items_per_page: Int = 20)
   
   private var endPoint: String {
     switch self {
     case .getProductList:
       return "api/products?"
+    case .getProduct(let id) :
+      return "api/products/\(id)"
     }
   }
   
   private var method: HTTPMethod {
     switch self {
     case .getProductList:
+      return .get
+    case .getProduct:
       return .get
     }
   }
@@ -37,12 +43,17 @@ enum OpenMarketRequestManager {
       params["page_no"] = page_no
       params["items_per_page"] = items_per_page
       return params
+    case .getProduct:
+      var params: [String: Any] = [:]
+      return params
     }
   }
   
   private var allHTTPHeaderFields: [String: String] {
     switch self {
     case .getProductList:
+      return ["Accept": "application/json"]
+    case .getProduct:
       return ["Accept": "application/json"]
     }
   }
