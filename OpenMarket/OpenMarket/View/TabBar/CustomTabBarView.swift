@@ -7,59 +7,32 @@
 
 import SwiftUI
  
-struct CustomTabBarView: View {
+struct CustomTabBar: View {
   
-  @State var currentTab: Tab = .Home
-  
-  @Namespace var animation
-  
+  @Binding var currentTab: Tab
   @State var currentXValue: CGFloat = 0
-  
-  init() {
-    UITabBar.appearance().isHidden = true
-  }
-  
+  var animation: Namespace.ID
+
   var body: some View {
-    TabView(selection: $currentTab) {
-      Text("Home")
-        .background(Color("BG").ignoresSafeArea())
-        .tag(Tab.Home)
-      
-      Text("Search")
-        .background(Color("BG").ignoresSafeArea())
-        .tag(Tab.Search)
-      
-      Text("Notifications")
-        .background(Color("BG").ignoresSafeArea())
-        .tag(Tab.Notifications)
-      
-      Text("Account")
-        .background(Color("BG").ignoresSafeArea())
-        .tag(Tab.Account)
-    }
-    .overlay(
-      HStack(spacing: 0) {
-        
-        ForEach(Tab.allCases, id: \.rawValue) { tab in
-          TabButton(tab: tab)
-        }
+    HStack(spacing: 0, content: {
+      ForEach(Tab.allCases, id: \.rawValue) { tab in
+        TabButton(tab: tab)
+         
       }
-        .padding(.vertical)
-        .padding(.bottom, getSafeArea().bottom == 0 ? 10 : (getSafeArea().bottom - 10) )
-        .background(
-        
-          MaterialEffect(style: .systemMaterialDark)
-            .clipShape(BottomCurve(currentXvalue: currentXValue))
-        )
-      , alignment: .bottom
-    )
-    .ignoresSafeArea(.all, edges: .bottom)
-    .preferredColorScheme(.dark)
+    })
+    .padding(.top)
+    .padding(.bottom, getSafeArea().bottom == 0 ? 15 : 10 )
+    .background {
+      Color.theme.tabBarBackground
+        .shadow(color: Color.theme.background ,radius: 5, x: 0, y: -5)
+        .clipShape(BottomCurve(currentXvalue: currentXValue))
+        .ignoresSafeArea(.container, edges: .bottom)
+    }
   }
 }
 
-extension CustomTabBarView {
-
+extension CustomTabBar {
+  
   @ViewBuilder
   func TabButton(tab: Tab) -> some View {
     
@@ -72,18 +45,21 @@ extension CustomTabBarView {
       } label: {
         Image(systemName: tab.rawValue)
           .resizable()
+          .renderingMode(.template)
           .aspectRatio(contentMode: .fit)
           .frame(width: 25, height: 25)
           .frame(maxWidth: .infinity)
+          .foregroundColor(currentTab == tab ? Color.theme.white : Color.theme.secondaryText)
           .padding(currentTab == tab ? 15 : 0)
           .background(
           
             ZStack {
               if currentTab == tab {
-                MaterialEffect(style:
-                    .systemMaterialDark)
-                .clipShape(Circle())
-                .matchedGeometryEffect(id: "TAB", in: animation)
+                
+                Circle()
+                  .fill(Color.theme.red)
+                  .shadow(color: Color.theme.background ,radius: 8, x: 5, y: 5)
+                  .matchedGeometryEffect(id: "TAB", in: animation)
               }
             }
           )
@@ -101,17 +77,11 @@ extension CustomTabBarView {
   }
 }
 
-struct CustomTabBar_Previews: PreviewProvider {
-  static var previews: some View {
-    CustomTabBarView()
-  }
-}
-
 enum Tab: String, CaseIterable {
-  case Home = "house.fill"
-  case Search = "magnifyingglass"
-  case Notifications = "bell.fill"
-  case Account = "person.fill"
+  case home = "house.fill"
+  case cart = "cart.fill"
+  case favorite = "star.fill"
+  case profile = "person.fill"
 }
 
 extension View {

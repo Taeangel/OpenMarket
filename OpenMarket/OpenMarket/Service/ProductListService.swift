@@ -12,6 +12,14 @@ class ProductListService {
   
   @Published var productList: ProductListModel?
   
+  var productListValue: Published<ProductListModel?> {
+    return _productList
+  }
+  
+  var productListPublisher: Published<ProductListModel?>.Publisher {
+    return $productList
+  }
+  
   private var coinSubscription = Set<AnyCancellable>()
   
   init() {
@@ -23,7 +31,6 @@ class ProductListService {
     Provider.shared.requestPublisher(.getProductList())
       .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
         self?.productList = returnedProductList
-        print(self?.productList)
       }
       .store(in: &coinSubscription)
   }
