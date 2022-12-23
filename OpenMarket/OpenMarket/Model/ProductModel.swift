@@ -15,7 +15,7 @@ struct ProductModel: Codable {
     let currency: String?
     let price, bargainPrice, discountedPrice, stock: Int?
     let createdAt, issuedAt: String?
-    let images: [Image]?
+    let images: [ProductImage]?
     let vendors: Vendors?
 
     enum CodingKeys: String, CodingKey {
@@ -34,7 +34,7 @@ struct ProductModel: Codable {
 }
 
 // MARK: - Image
-struct Image: Codable {
+struct ProductImage: Codable {
     let id: Int?
     let url, thumbnailURL: String?
     let issuedAt: String?
