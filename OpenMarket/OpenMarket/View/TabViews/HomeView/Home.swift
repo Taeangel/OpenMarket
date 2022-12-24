@@ -40,7 +40,7 @@ struct Home: View {
           .background{
             RoundedRectangle(cornerRadius: 10,style: .continuous)
               .fill(Color.theme.white)
-        }
+          }
           
           Button {
             
@@ -55,35 +55,9 @@ struct Home: View {
               .background{
                 RoundedRectangle(cornerRadius: 10,style: .continuous)
                   .fill(Color.theme.white)
-            }
+              }
           }
         }
-        
-//        HStack(spacing: 0) {
-//          ForEach(["All","Chair","Table","Lamp","Floor"], id: \.self) { menu in
-//            Text(menu)
-//              .font(.callout)
-//              .fontWeight(.semibold)
-//              .foregroundColor(vm.currentMenu == menu ? Color.theme.blue : Color.theme.white)
-//              .padding(.vertical, 8)
-//              .frame(maxWidth: .infinity)
-//              .background {
-//                if vm.currentMenu == menu {
-//                  Capsule()
-//                    .fill(Color.theme.black.opacity(0.5))
-//                    .shadow(color: Color.theme.black.opacity(0.1), radius: 5, x: 5, y: 5)
-//                    .matchedGeometryEffect(id: "MENU", in: animation)
-//                }
-//              }
-//              .onTapGesture {
-//                withAnimation(.easeInOut) {
-//                  vm.currentMenu = menu
-//                }
-//              }
-//          }
-//        }
-//        .padding(.top, 10)
-//        .padding(.bottom, 20)
         
         ForEach(vm.productList?.pages ?? []) { page in
           CardView(page: page)
@@ -98,18 +72,42 @@ struct Home: View {
   @ViewBuilder
   func CardView(page: Page) -> some View {
     HStack(spacing: 12) {
-      ImageView(url: page.thumbnailURL)
-        .frame(width: 120)
-        .clipShape(
-          RoundedRectangle(cornerRadius: 20)
-        )
-        .padding(5)
+      
+      Group {
+        if vm.currentActiveItem?.id == page.id && vm.showDetailView {
+          ImageView(url: page.thumbnailURL)
+            .aspectRatio(contentMode: .fill)
+            .opacity(0)
+        } else {
+          ImageView(url: page.thumbnailURL)
+            .aspectRatio(contentMode: .fill)
+            .matchedGeometryEffect(id: "\(String(describing: page.id))" + "IMAGE", in: animation)
+        }
+      }
+      .frame(width: 120)
+      .clipShape(
+        RoundedRectangle(cornerRadius: 20)
+      )
+      .padding(5)
+      
+      Group {
+        if vm.currentActiveItem?.id == page.id && vm.showDetailView {
+          Text(page.name ?? "")
+            .fontWeight(.bold)
+            .lineLimit(1)
+            .foregroundColor(Color.theme.black)
+            .opacity(0)
+        } else {
+          Text(page.name ?? "")
+            .fontWeight(.bold)
+            .lineLimit(1)
+            .foregroundColor(Color.theme.black)
+            .matchedGeometryEffect(id: "\(String(describing: page.name))" + "NAME", in: animation)
+        }
+      }
       
       VStack(alignment: .leading, spacing: 10) {
-        Text(page.name ?? "")
-          .fontWeight(.bold)
-          .lineLimit(1)
-          .foregroundColor(Color.theme.black)
+        
         
         Text(page.pageDescription ?? "")
           .font(.system(size: 12))
@@ -155,12 +153,18 @@ struct Home: View {
         .fill(Color.theme.white)
         .shadow(color: Color.theme.black.opacity(0.08), radius: 5, x: 5, y: 5)
     }
+    .onTapGesture {
+      withAnimation(.easeInOut) {
+        vm.currentActiveItem = page
+        vm.showDetailView = true
+      }
+    }
     .padding(.bottom, 6)
   }
 }
 
 struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-    }
+  static var previews: some View {
+    MainView()
+  }
 }

@@ -38,7 +38,15 @@ struct MainView: View {
     }
     .overlay(alignment: .bottom) {
       CustomTabBar(currentTab: $vm.currentTab, animation: animation)
+        .offset(y: vm.showDetailView ? 150 : 0)
     }
+    .overlay(content: {
+      if let page = vm.currentActiveItem, vm.showDetailView {
+        DetailView(product: page, animation: animation)
+          .environmentObject(vm)
+          .transition(.offset(x: 1, y: 1))
+      }
+    })
     .background(Color.theme.background)
   }
     

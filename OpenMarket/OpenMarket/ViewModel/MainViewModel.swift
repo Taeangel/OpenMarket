@@ -12,6 +12,8 @@ class MainViewModel: ObservableObject {
   @Published var currentTab: Tab = .home
   @Published var currentMenu: String = "All"
   @Published var productList: ProductListModel?
+  @Published var currentActiveItem: Page?
+  @Published var showDetailView: Bool = false
   
   let productListService = ProductListService()
   
