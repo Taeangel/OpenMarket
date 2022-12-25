@@ -6,3 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
+
+class AddProductViewModel: ObservableObject {
+  @Published var images: [UIImage] = []
+  
+}

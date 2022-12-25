@@ -10,6 +10,7 @@ import Combine
 
 class HomeViewModel: ObservableObject {
   @Published var productList: ProductListModel?
+  @Published var searchText: String = ""
   let productListService = ProductListService()
   private var cancellalbes = Set<AnyCancellable>()
 

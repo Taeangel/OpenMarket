@@ -16,7 +16,7 @@ struct Home: View {
       VStack(spacing: 15) {
         title
         
-        search
+        SearchBarView(seachText: $vm.searchText)
         
         cell
       }
