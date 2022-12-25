@@ -12,15 +12,21 @@ class ProductService {
   
   @Published var product: ProductModel?
   
-  private var coinSubscription = Set<AnyCancellable>()
-  
-  let id: Int
-  init(id: Int) {
-    self.id = id
-    getProduct()
+  var productValue: Published<ProductModel?> {
+    return _product
   }
   
-  func getProduct() {
+  var productPublisher: Published<ProductModel?>.Publisher {
+    return $product
+  }
+  
+  private var coinSubscription = Set<AnyCancellable>()
+  
+  init(id: Int) {
+    getProduct(id)
+  }
+  
+  func getProduct(_ id: Int) {
     Provider.shared.requestPublisher(.getProduct(id))
       .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProduct in
         self?.product = returnedProduct

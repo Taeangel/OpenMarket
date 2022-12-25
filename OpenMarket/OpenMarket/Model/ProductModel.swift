@@ -49,8 +49,17 @@ struct ProductModel: Codable {
   let currency: String?
   let price, bargainPrice, discountedPrice, stock: Int?
   let createdAt, issuedAt: String?
-  let images: [ProductImage]?
+  let images: [ProductImage]
   let vendors: Vendors?
+  
+  
+  var moneySign: String {
+    if currency == "USD" {
+      return "$"
+    } else {
+      return "₩"
+    }
+  }
   
   enum CodingKeys: String, CodingKey {
     case id
@@ -68,10 +77,17 @@ struct ProductModel: Codable {
 }
 
 // MARK: - Image
-struct ProductImage: Codable {
+struct ProductImage: Codable, Identifiable {
   let id: Int?
   let url, thumbnailURL: String?
   let issuedAt: String?
+  
+  var imageURL: URL {
+    guard let url = url, let url = URL(string: url) else {
+      return URL(fileURLWithPath: "")
+    }
+    return url
+  }
   
   enum CodingKeys: String, CodingKey {
     case id, url

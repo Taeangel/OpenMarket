@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-
   @StateObject var vm: MainViewModel = .init()
-  @Namespace var animation
   
   init() {
     UITabBar.appearance().isHidden = true
@@ -18,12 +16,11 @@ struct MainView: View {
   
   var body: some View {
     TabView(selection: $vm.currentTab) {
-      Home(animation: animation)
-        .environmentObject(vm)
+      Home()
         .tag(Tab.home)
         .setUpTab()
       
-      Text("Cart")
+      AddProductView()
         .tag(Tab.cart)
         .setUpTab()
       
@@ -37,19 +34,9 @@ struct MainView: View {
       
     }
     .overlay(alignment: .bottom) {
-      CustomTabBar(currentTab: $vm.currentTab, animation: animation)
-        .offset(y: vm.showDetailView ? 150 : 0)
+      CustomTabBar(currentTab: $vm.currentTab)
     }
-    .overlay(content: {
-      if let page = vm.currentActiveItem, vm.showDetailView {
-        DetailView(product: page, animation: animation)
-          .environmentObject(vm)
-          .transition(.offset(x: 1, y: 1))
-      }
-    })
-    .background(Color.theme.background)
   }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -63,7 +50,7 @@ extension View {
   func setUpTab() -> some View {
     self.frame(maxWidth: .infinity, maxHeight: .infinity)
       .background {
-        Color("BG")
+        Color.theme.background
           .ignoresSafeArea()
       }
   }

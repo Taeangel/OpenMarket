@@ -53,7 +53,8 @@ extension Provider {
       throw NetworkErrorError.unauthorized
     case 204:
       throw NetworkErrorError.noContent
-    default: print("default")
+    default:
+      print("default")
     }
     
     if !(200...299).contains(httpResponse.statusCode){

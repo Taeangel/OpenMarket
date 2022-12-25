@@ -9,10 +9,13 @@ import SwiftUI
 
 enum openMarketRouter: NavigationRouter {
   case main
+  case detail(product: Page)
   
   var transition: NavigationTranisitionStyle {
     switch self {
     case .main:
+      return .push
+    case .detail:
       return .push
     }
   }
@@ -22,6 +25,8 @@ enum openMarketRouter: NavigationRouter {
     switch self {
     case .main:
       MainView()
+    case let .detail(product):
+      DetailView(product: product)
     }
   }
 }

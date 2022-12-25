@@ -1,28 +1,22 @@
 //
-//  MainViewModel.swift
+//  HomeViewModel.swift
 //  OpenMarket
 //
-//  Created by song on 2022/12/23.
+//  Created by song on 2022/12/25.
 //
 
 import Foundation
 import Combine
 
-class MainViewModel: ObservableObject {
-  @Published var currentTab: Tab = .home
-  @Published var currentMenu: String = "All"
+class HomeViewModel: ObservableObject {
   @Published var productList: ProductListModel?
-  @Published var currentActiveItem: Page?
-  @Published var showDetailView: Bool = false
-  
   let productListService = ProductListService()
-  
   private var cancellalbes = Set<AnyCancellable>()
 
   init() {
     self.addSubscribers()
+
   }
-  
   private func addSubscribers() {
     productListService.productListPublisher
       .receive(on: DispatchQueue.main)
@@ -34,4 +28,3 @@ class MainViewModel: ObservableObject {
       .store(in: &cancellalbes)
   }
 }
- 

@@ -11,7 +11,7 @@ struct CustomTabBar: View {
   
   @Binding var currentTab: Tab
   @State var currentXValue: CGFloat = 0
-  var animation: Namespace.ID
+  @Namespace var animation
 
   var body: some View {
     HStack(spacing: 0, content: {

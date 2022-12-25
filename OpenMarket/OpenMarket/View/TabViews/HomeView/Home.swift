@@ -8,144 +8,145 @@
 import SwiftUI
 
 struct Home: View {
-  @EnvironmentObject var vm: MainViewModel
-  
-  var animation: Namespace.ID
+  @StateObject var vm: HomeViewModel = HomeViewModel()
+  @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
+
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       VStack(spacing: 15) {
-        VStack(alignment: .leading, spacing: 8) {
-          Text("Best Funiture")
-            .font(.title.bold())
-          
-          Text("Perfect Choice!")
-            .font(.callout)
-        }
-        .foregroundColor(Color.theme.black)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        title
         
-        HStack {
-          HStack(spacing: 12) {
-            Image(systemName: "magnifyingglass")
-              .resizable()
-              .renderingMode(.template)
-              .aspectRatio(contentMode: .fit)
-              .frame(width: 25, height: 25)
-              .foregroundColor(Color.theme.black)
-            
-            TextField("Search", text: .constant(""))
-          }
-          .padding(.horizontal)
-          .padding(.vertical, 12)
-          .background{
-            RoundedRectangle(cornerRadius: 10,style: .continuous)
-              .fill(Color.theme.white)
-          }
-          
-          Button {
-            
-          } label: {
-            Image(systemName: "slider.horizontal.3")
-              .resizable()
-              .renderingMode(.template)
-              .aspectRatio(contentMode: .fit)
-              .foregroundColor(Color.theme.black)
-              .frame(width: 25, height: 25)
-              .padding(12)
-              .background{
-                RoundedRectangle(cornerRadius: 10,style: .continuous)
-                  .fill(Color.theme.white)
-              }
-          }
-        }
+        search
         
-        ForEach(vm.productList?.pages ?? []) { page in
-          CardView(page: page)
-        }
+        cell
       }
       .padding()
       .padding(.bottom, 100)
     }
     .background(Color.theme.background)
   }
+}
+
+struct Home_Previews: PreviewProvider {
+  static var previews: some View {
+    MainView()
+  }
+}
+
+extension Home {
+  private var title: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text("Best Product")
+        .font(.title.bold())
+      
+      Text("Perfect Choice!")
+        .font(.callout)
+    }
+    .foregroundColor(Color.theme.black)
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+  
+  private var search: some View {
+    HStack {
+      HStack(spacing: 12) {
+        Image(systemName: "magnifyingglass")
+          .resizable()
+          .renderingMode(.template)
+          .aspectRatio(contentMode: .fit)
+          .frame(width: 25, height: 25)
+          .foregroundColor(Color.theme.black)
+        
+        TextField("Search", text: .constant(""))
+      }
+      .padding(.horizontal)
+      .padding(.vertical, 12)
+      .background{
+        RoundedRectangle(cornerRadius: 10,style: .continuous)
+          .fill(Color.theme.white)
+      }
+      
+      Button {
+        
+      } label: {
+        Image(systemName: "slider.horizontal.3")
+          .resizable()
+          .renderingMode(.template)
+          .aspectRatio(contentMode: .fit)
+          .foregroundColor(Color.theme.black)
+          .frame(width: 25, height: 25)
+          .padding(12)
+          .background{
+            RoundedRectangle(cornerRadius: 10,style: .continuous)
+              .fill(Color.theme.white)
+          }
+      }
+    }
+  }
+  
+  private var cell: some View {
+    ForEach(vm.productList?.pages ?? []) { page in
+      CardView(page: page)
+    }
+  }
   
   @ViewBuilder
   func CardView(page: Page) -> some View {
+    
     HStack(spacing: 12) {
-      
-      Group {
-        if vm.currentActiveItem?.id == page.id && vm.showDetailView {
-          ImageView(url: page.thumbnailURL)
-            .aspectRatio(contentMode: .fill)
-            .opacity(0)
-        } else {
-          ImageView(url: page.thumbnailURL)
-            .aspectRatio(contentMode: .fill)
-            .matchedGeometryEffect(id: "\(String(describing: page.id))" + "IMAGE", in: animation)
-        }
-      }
+      ImageView(url: page.thumbnailURL)
+      .aspectRatio(contentMode: .fill)
+
       .frame(width: 120)
       .clipShape(
         RoundedRectangle(cornerRadius: 20)
       )
       .padding(5)
       
-      Group {
-        if vm.currentActiveItem?.id == page.id && vm.showDetailView {
+        VStack(alignment: .leading, spacing: 10) {
           Text(page.name ?? "")
             .fontWeight(.bold)
             .lineLimit(1)
             .foregroundColor(Color.theme.black)
-            .opacity(0)
-        } else {
-          Text(page.name ?? "")
-            .fontWeight(.bold)
-            .lineLimit(1)
-            .foregroundColor(Color.theme.black)
-            .matchedGeometryEffect(id: "\(String(describing: page.name))" + "NAME", in: animation)
+ 
+          
+          Text(page.pageDescription ?? "")
+            .font(.system(size: 12))
+            .lineLimit(2)
+            .foregroundColor(Color.theme.secondaryText)
+            .padding(.bottom, -10)
+          
+          HStack {
+            VStack(alignment: .leading) {
+              Text(page.priceString)
+                .font(.title3)
+                .foregroundColor(Color.theme.black)
+              
+              Text(page.discountedPriceString)
+                .font(.title3.bold())
+                .foregroundColor(Color.theme.red)
+            }
+            
+            Spacer()
+            
+            Button {
+              
+            } label: {
+              Text("Buy")
+                .font(.callout)
+                .fontWeight(.semibold)
+                .foregroundColor(Color.theme.white)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 20)
+                .background {
+                  Capsule()
+                    .fill(Color.theme.red)
+                }
+            }
+          }
+          .offset(y: 20)
         }
-      }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment:  .topLeading)
       
-      VStack(alignment: .leading, spacing: 10) {
-        
-        
-        Text(page.pageDescription ?? "")
-          .font(.system(size: 12))
-          .lineLimit(2)
-          .foregroundColor(Color.theme.secondaryText)
-          .padding(.bottom, -10)
-        
-        HStack {
-          VStack(alignment: .leading) {
-            Text(page.priceString)
-              .font(.title3)
-              .foregroundColor(Color.theme.black)
-            
-            Text(page.discountedPriceString)
-              .font(.title3.bold())
-              .foregroundColor(Color.theme.red)
-          }
-          
-          Spacer()
-          
-          Button {
-            
-          } label: {
-            Text("Buy")
-              .font(.callout)
-              .fontWeight(.semibold)
-              .foregroundColor(Color.theme.white)
-              .padding(.vertical, 8)
-              .padding(.horizontal, 20)
-              .background {
-                Capsule()
-                  .fill(Color.theme.red)
-              }
-          }
-        }
-        .offset(y: 20)
-      }
-      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment:  .topLeading)
     }
     .padding(10)
     .background {
@@ -155,16 +156,9 @@ struct Home: View {
     }
     .onTapGesture {
       withAnimation(.easeInOut) {
-        vm.currentActiveItem = page
-        vm.showDetailView = true
+        coordinator.show(.detail(product: page))
       }
     }
     .padding(.bottom, 6)
-  }
-}
-
-struct Home_Previews: PreviewProvider {
-  static var previews: some View {
-    MainView()
   }
 }
