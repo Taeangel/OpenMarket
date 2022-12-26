@@ -12,7 +12,8 @@ struct AddProductView: View {
   @StateObject var vm: AddProductViewModel = AddProductViewModel()
   @State var showPicker: Bool = false
   var body: some View {
-    VStack {
+    
+    Form {
       Text("상품등록")
         .font(.title3)
         .fontWeight(.bold)
@@ -20,24 +21,32 @@ struct AddProductView: View {
       
       imageView
       
-      Spacer()
+      infomationSection
+      
+      Button {
+        
+      } label: {
+        Text("상품등록")
+      }
+      .disabled(!vm.postButtonisValid)
     }
     .popupImagePocker(show: $showPicker) { assets in
       let manager = PHCachingImageManager.default()
       let option = PHImageRequestOptions()
       option.isSynchronous = true
       DispatchQueue.global(qos: .userInteractive).async {
+        var images: [UIImage] = []
         assets.forEach { asset in
           manager.requestImage(for: asset,
                                targetSize: .init(),
                                contentMode: .default,
                                options: option) { image, _ in
             guard let image = image else { return }
-            DispatchQueue.main.async {
-              print("\(image.scale )")
-              self.vm.images.append(image)
-            }
+            images.append(image)
           }
+        }
+        DispatchQueue.main.async {
+          self.vm.images = images
         }
       }
     }
@@ -47,15 +56,41 @@ struct AddProductView: View {
     ZStack{
       Rectangle()
         .fill(Color(uiColor: UIColor.systemGray6))
-        .frame(width: 100, height: 100, alignment: .center)
+        .frame(height: 150, alignment: .center)
+        .frame(minWidth: 150)
         .cornerRadius(10)
       VStack {
-        Image(systemName: "photo.on.rectangle")
+        Image(systemName:vm.images.count != 5 ? "photo.on.rectangle" : "arrow.left.arrow.right")
           .padding(6)
-          .foregroundColor(Color(uiColor: UIColor.gray))
-        Text("\(vm.images.count)/\(5)")
-          .foregroundColor(Color(uiColor: UIColor.gray))
+          .foregroundColor( Color.theme.secondaryText)
+        Text(vm.images.count != 5 ? "\(vm.images.count)/\(5)" : "imageChange")
+          .foregroundColor(Color.theme.secondaryText)
       }
+    }
+  }
+  
+  var infomationSection: some View {
+    Section {
+      TextField("상품이름", text: $vm.productName)
+      HStack {
+        TextField("가격", text: $vm.price)
+        
+        Picker("", selection: $vm.currency) {
+          ForEach(Currency.allCases, id: \.self) { currency in
+            Text(currency.rawValue)
+          }
+        }
+      }
+      
+      TextField("할인할 가격", text:$vm.discountPrice )
+      TextField("상품수량", text: $vm.stock)
+      TextField("제품설명", text: $vm.productDescription)
+    } header: {
+      Text("제품정보")
+    } footer: {
+      Text("\(vm.informationError)")
+        .foregroundColor(Color.theme.red)
+        .opacity(vm.informationError == "" ? 0 : 1)
     }
   }
   
@@ -66,24 +101,25 @@ struct AddProductView: View {
           ZStack(alignment: .topTrailing) {
             Image(uiImage: image)
               .resizable()
-              .frame(width: 100, height: 100)
+              .frame(height: 150)
+              .frame(maxWidth: 200)
               .cornerRadius(10)
-              Button {
-                vm.images.remove(at: index)
-
-              } label: {
-                Image(systemName: "xmark.circle.fill")
-                  .foregroundColor(.red)
-              }
+            Button {
+              vm.images.remove(at: index)
+            } label: {
+              Image(systemName: "xmark.circle.fill")
+                .foregroundColor(.red)
+            }
           }
         }
-          Button {
-            showPicker.toggle()
-          } label: {
-            imagePickerView
-          }
+        Button {
+          showPicker.toggle()
+        } label: {
+          imagePickerView
+        }
       }
     }
+    .scrollIndicators(.hidden)
   }
 }
 

@@ -13,9 +13,7 @@ extension View {
   func popupImagePocker(show: Binding<Bool>,transition: AnyTransition = .move(edge: .bottom) ,onSelect: @escaping ([PHAsset]) -> ()) -> some View {
     self
       .overlay {
-        
         ZStack {
-          
           Rectangle()
             .fill(.ultraThinMaterial)
             .ignoresSafeArea()
@@ -23,7 +21,6 @@ extension View {
             .onTapGesture {
               show.wrappedValue = false
             }
-          
           if show.wrappedValue {
             PopupImagePockerView {
               show.wrappedValue = false
@@ -32,8 +29,6 @@ extension View {
               show.wrappedValue = false
             }.transition(transition)
           }
-          
-
         }
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         .animation(.easeInOut, value: show.wrappedValue)

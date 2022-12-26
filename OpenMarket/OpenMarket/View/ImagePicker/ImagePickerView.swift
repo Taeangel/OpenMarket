@@ -60,7 +60,7 @@ struct PopupImagePockerView: View {
           }
           onSalect(imageAsset)
         } label: {
-          Text("ADD\(vm.selectedImages.isEmpty ? "" : "\(vm.selectedImages.count) Images")")
+          Text("Add\(vm.selectedImages.isEmpty ? "" : "\(vm.selectedImages.count) Images")")
             .font(.callout)
             .fontWeight(.semibold)
             .foregroundColor(.white)
@@ -68,14 +68,13 @@ struct PopupImagePockerView: View {
             .padding(.vertical, 10)
             .background {
               Capsule()
-                .fill(.blue)
+                .fill(Color.theme.blue)
             }
         }
         .disabled(vm.selectedImages.isEmpty)
         .opacity(vm.selectedImages.isEmpty ? 0.6 : 1)
         .padding(.vertical)
         
-
       }
     }
     .frame(height: UIScreen.main.bounds.size.height / 1.8)
@@ -131,10 +130,8 @@ struct PopupImagePockerView: View {
       .clipped()
       .onTapGesture {
         withAnimation(.easeOut) {
-          if let index = vm.selectedImages.firstIndex(where: { asset in
-            asset.id == imageAsset.id
-            
-          }) {
+          
+          if let index = vm.selectedImages.firstIndex(where: { $0.id == imageAsset.id }) {
             vm.selectedImages.remove(at: index)
             vm.selectedImages.enumerated().forEach { item in
               vm.selectedImages[item.offset].assetIndex = item.offset
@@ -144,9 +141,14 @@ struct PopupImagePockerView: View {
             newAsset.assetIndex = vm.selectedImages.count
             vm.selectedImages.append(newAsset)
           }
-
+          
+          if vm.selectedImages.count > 5 {
+            vm.selectedImages.remove(at: 0)
+            vm.selectedImages.enumerated().forEach { item in
+              vm.selectedImages[item.offset].assetIndex = item.offset
+            }
+          }
         }
-        
       }
     }
     .frame(height: 70)
