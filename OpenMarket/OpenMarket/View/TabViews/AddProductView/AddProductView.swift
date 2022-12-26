@@ -24,7 +24,7 @@ struct AddProductView: View {
       infomationSection
       
       Button {
-        
+        vm.postProduct()
       } label: {
         Text("상품등록")
       }

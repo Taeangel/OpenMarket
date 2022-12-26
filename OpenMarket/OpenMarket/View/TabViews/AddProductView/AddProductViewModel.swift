@@ -9,8 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-
-
 class AddProductViewModel: ObservableObject {
   @Published var images: [UIImage] = []
   @Published var productName: String = ""
@@ -21,7 +19,7 @@ class AddProductViewModel: ObservableObject {
   @Published var informationError: String = ""
   @Published var postButtonisValid: Bool = false
   @Published var currency: Currency = .KRW
-  
+  @Published var product: ProductModel?
   private var cancellable = Set<AnyCancellable>()
   
   init() {
@@ -56,6 +54,26 @@ class AddProductViewModel: ObservableObject {
     isFormValidPublsher
       .receive(on: RunLoop.main)
       .assign(to: \.postButtonisValid, on: self)
+      .store(in: &cancellable)
+  }
+  
+  private func makeParam() -> Param {
+    return Param(name: productName,
+                  description: discountPrice,
+                  price: Int(price) ?? 1,
+                  currency: currency.rawValue,
+                  discountedPrice: Int(discountPrice) ?? 0,
+                  stock: Int(stock) ?? 1)
+  }
+  
+  private func convertImageToData() -> [Data] {
+    return images.map { $0.jpegData(compressionQuality: 0.01) ?? Data() }
+  }
+  func postProduct() {
+    Provider.shared.requestPublisher(.postProduct(params: makeParam(), images:  convertImageToData()))
+      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProduct in
+        self?.product = returnedProduct
+      }
       .store(in: &cancellable)
   }
 }
