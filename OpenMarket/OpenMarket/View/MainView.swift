@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-  @StateObject var vm: MainViewModel = .init()
+  @StateObject var vm: MainViewModel = MainViewModel()
   
   init() {
     UITabBar.appearance().isHidden = true
@@ -21,15 +21,15 @@ struct MainView: View {
         .setUpTab()
       
       AddProductView()
-        .tag(Tab.cart)
+        .tag(Tab.productRegister)
         .setUpTab()
       
       Text("Favorite")
         .tag(Tab.favorite)
         .setUpTab()
       
-      Text("Profile")
-        .tag(Tab.profile)
+      MyProductView()
+        .tag(Tab.myProductList)
         .setUpTab()
       
     }

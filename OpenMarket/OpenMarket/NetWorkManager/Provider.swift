@@ -12,10 +12,9 @@ struct Provider {
   static let shared = Provider()
   private init() {}
   
-  func requestPublisher<T: Codable>(_ request: OpenMarketRequestManager) -> AnyPublisher<T, NetworkErrorError> {
+  func requestPublisher(_ request: OpenMarketRequestManager) -> AnyPublisher<Data, NetworkErrorError> {
     return URLSession.shared.dataTaskPublisher(for: request.asURLRequest)
       .tryMap(filterURLData)
-      .decode(type: T.self, decoder: JSONDecoder())
       .mapError(convertToNetworkError)
       .eraseToAnyPublisher()
   }
@@ -57,7 +56,7 @@ extension Provider {
       print("default")
     }
     
-    if !(200...299).contains(httpResponse.statusCode){
+    if !(200...299).contains(httpResponse.statusCode) {
       throw NetworkErrorError.badStatus(code: httpResponse.statusCode)
     }
     

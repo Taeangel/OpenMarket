@@ -41,8 +41,11 @@
 		8683769B295862BA00D81755 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8683769A295862BA00D81755 /* View.swift */; };
 		8683769D29590D7900D81755 /* ProductStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8683769C29590D7900D81755 /* ProductStatus.swift */; };
 		8683769F29595A0A00D81755 /* Cyrrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8683769E29595A0A00D81755 /* Cyrrency.swift */; };
-		868376A22959641E00D81755 /* MultipartForm in Frameworks */ = {isa = PBXBuildFile; productRef = 868376A12959641E00D81755 /* MultipartForm */; };
 		868376A429596CD900D81755 /* Param.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868376A329596CD900D81755 /* Param.swift */; };
+		868376AA295A539D00D81755 /* MyProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868376A9295A539D00D81755 /* MyProductView.swift */; };
+		868376AC295A53AB00D81755 /* MyProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868376AB295A53AB00D81755 /* MyProductViewModel.swift */; };
+		868376AF295A594C00D81755 /* MultipartForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868376AE295A594C00D81755 /* MultipartForm.swift */; };
+		868376B1295A5F5400D81755 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868376B0295A5F5400D81755 /* ContentType.swift */; };
 		86F049EE29581A68007CC401 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F049ED29581A68007CC401 /* HomeViewModel.swift */; };
 		86F049F329581B6F007CC401 /* AddProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F049F229581B6F007CC401 /* AddProductViewModel.swift */; };
 		86F049F529581B82007CC401 /* AddProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F049F429581B82007CC401 /* AddProductView.swift */; };
@@ -87,6 +90,10 @@
 		8683769C29590D7900D81755 /* ProductStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductStatus.swift; sourceTree = "<group>"; };
 		8683769E29595A0A00D81755 /* Cyrrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cyrrency.swift; sourceTree = "<group>"; };
 		868376A329596CD900D81755 /* Param.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Param.swift; sourceTree = "<group>"; };
+		868376A9295A539D00D81755 /* MyProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProductView.swift; sourceTree = "<group>"; };
+		868376AB295A53AB00D81755 /* MyProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProductViewModel.swift; sourceTree = "<group>"; };
+		868376AE295A594C00D81755 /* MultipartForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartForm.swift; sourceTree = "<group>"; };
+		868376B0295A5F5400D81755 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 		86F049ED29581A68007CC401 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		86F049F229581B6F007CC401 /* AddProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewModel.swift; sourceTree = "<group>"; };
 		86F049F429581B82007CC401 /* AddProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductView.swift; sourceTree = "<group>"; };
@@ -99,7 +106,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				868376A22959641E00D81755 /* MultipartForm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,8 +158,10 @@
 			children = (
 				8607E56A2954F4EF00254FCD /* URLRequestManager.swift */,
 				8607E57F2954F83E00254FCD /* Provider.swift */,
+				868376B0295A5F5400D81755 /* ContentType.swift */,
 				8607E5812954F86500254FCD /* NetworkError.swift */,
 				8607E5882954F97300254FCD /* HTTPMethod.swift */,
+				868376AD295A593500D81755 /* MultipartForm */,
 				8607E5B52955442D00254FCD /* Extension */,
 			);
 			path = NetWorkManager;
@@ -260,6 +268,8 @@
 		867E9E232956C84700C8698D /* TabViews */ = {
 			isa = PBXGroup;
 			children = (
+				868376A6295A534E00D81755 /* MyProductView */,
+				868376A5295A533F00D81755 /* FavoriteProductView */,
 				86F049EC29581996007CC401 /* AddProductView */,
 				867E9E242956C8FC00C8698D /* HomeView */,
 			);
@@ -284,6 +294,30 @@
 				868376962958624600D81755 /* ImageAsset.swift */,
 			);
 			path = ImagePicker;
+			sourceTree = "<group>";
+		};
+		868376A5295A533F00D81755 /* FavoriteProductView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FavoriteProductView;
+			sourceTree = "<group>";
+		};
+		868376A6295A534E00D81755 /* MyProductView */ = {
+			isa = PBXGroup;
+			children = (
+				868376A9295A539D00D81755 /* MyProductView.swift */,
+				868376AB295A53AB00D81755 /* MyProductViewModel.swift */,
+			);
+			path = MyProductView;
+			sourceTree = "<group>";
+		};
+		868376AD295A593500D81755 /* MultipartForm */ = {
+			isa = PBXGroup;
+			children = (
+				868376AE295A594C00D81755 /* MultipartForm.swift */,
+			);
+			path = MultipartForm;
 			sourceTree = "<group>";
 		};
 		86F049EC29581996007CC401 /* AddProductView */ = {
@@ -330,7 +364,6 @@
 			);
 			name = OpenMarket;
 			packageProductDependencies = (
-				868376A12959641E00D81755 /* MultipartForm */,
 			);
 			productName = OpenMarket;
 			productReference = 8607E5572954F18300254FCD /* OpenMarket.app */;
@@ -361,7 +394,6 @@
 			);
 			mainGroup = 8607E54E2954F18300254FCD;
 			packageReferences = (
-				868376A02959641E00D81755 /* XCRemoteSwiftPackageReference "MultipartForm" */,
 			);
 			productRefGroup = 8607E5582954F18300254FCD /* Products */;
 			projectDirPath = "";
@@ -395,16 +427,19 @@
 				867E9E262956C90D00C8698D /* DetailView.swift in Sources */,
 				8683769D29590D7900D81755 /* ProductStatus.swift in Sources */,
 				8607E5732954F69800254FCD /* NavigationRouter.swift in Sources */,
+				868376AC295A53AB00D81755 /* MyProductViewModel.swift in Sources */,
 				8607E5892954F97300254FCD /* HTTPMethod.swift in Sources */,
 				8607E57B2954F73D00254FCD /* AppDelegate.swift in Sources */,
 				8607E5AE29551FE400254FCD /* CustomTabBarView.swift in Sources */,
 				8607E5C22955664B00254FCD /* ImageViewModel.swift in Sources */,
+				868376B1295A5F5400D81755 /* ContentType.swift in Sources */,
 				8607E56B2954F4EF00254FCD /* URLRequestManager.swift in Sources */,
 				86F049F829581EBA007CC401 /* SearchView.swift in Sources */,
 				868376992958626F00D81755 /* ImagePickerViewModel.swift in Sources */,
 				8607E5A8295519A800254FCD /* ProductModel.swift in Sources */,
 				8683769B295862BA00D81755 /* View.swift in Sources */,
 				8607E57D2954F74A00254FCD /* SceneDelegate.swift in Sources */,
+				868376AA295A539D00D81755 /* MyProductView.swift in Sources */,
 				8607E5782954F6AC00254FCD /* AppRouter.swift in Sources */,
 				868376952958623100D81755 /* ImagePickerView.swift in Sources */,
 				8607E5B22955371A00254FCD /* ButtomCurve.swift in Sources */,
@@ -426,6 +461,7 @@
 				8607E5762954F6A700254FCD /* Coordinator.swift in Sources */,
 				868376972958624600D81755 /* ImageAsset.swift in Sources */,
 				8607E5AA29551AC600254FCD /* ProductService.swift in Sources */,
+				868376AF295A594C00D81755 /* MultipartForm.swift in Sources */,
 				867E9E2A2957200C00C8698D /* PreviewProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -631,25 +667,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		868376A02959641E00D81755 /* XCRemoteSwiftPackageReference "MultipartForm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/davbeck/MultipartForm";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		868376A12959641E00D81755 /* MultipartForm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 868376A02959641E00D81755 /* XCRemoteSwiftPackageReference "MultipartForm" */;
-			productName = MultipartForm;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8607E54F2954F18300254FCD /* Project object */;
 }

@@ -79,9 +79,9 @@ extension CustomTabBar {
 
 enum Tab: String, CaseIterable {
   case home = "house.fill"
-  case cart = "cart.fill"
+  case productRegister = "arrow.up.square"
   case favorite = "star.fill"
-  case profile = "person.fill"
+  case myProductList = "person.crop.circle"
 }
 
 extension View {

@@ -130,7 +130,6 @@ struct PopupImagePockerView: View {
       .clipped()
       .onTapGesture {
         withAnimation(.easeOut) {
-          
           if let index = vm.selectedImages.firstIndex(where: { $0.id == imageAsset.id }) {
             vm.selectedImages.remove(at: index)
             vm.selectedImages.enumerated().forEach { item in

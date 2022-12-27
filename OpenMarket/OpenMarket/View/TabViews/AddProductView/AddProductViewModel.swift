@@ -69,11 +69,10 @@ class AddProductViewModel: ObservableObject {
   private func convertImageToData() -> [Data] {
     return images.map { $0.jpegData(compressionQuality: 0.01) ?? Data() }
   }
+  
   func postProduct() {
     Provider.shared.requestPublisher(.postProduct(params: makeParam(), images:  convertImageToData()))
-      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProduct in
-        self?.product = returnedProduct
-      }
+      .sink(receiveCompletion: Provider.shared.handleCompletion) {  _ in }
       .store(in: &cancellable)
   }
 }

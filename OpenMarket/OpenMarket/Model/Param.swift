@@ -14,8 +14,8 @@ struct Param: Encodable {
   let currency: String
   let discountedPrice: Int
   let stock: Int
-  let scret: String = "bjv33pu73cbajp1"
-  let boundary: String? = UUID().uuidString
+  let secret: String = "bjv33pu73cbajp1"
+  let boundary: String = UUID().uuidString
   
   enum CodingKeys: String, CodingKey {
     case name
@@ -24,6 +24,6 @@ struct Param: Encodable {
     case currency
     case discountedPrice = "discounted_price"
     case stock
-    case scret
+    case secret
   }
 }

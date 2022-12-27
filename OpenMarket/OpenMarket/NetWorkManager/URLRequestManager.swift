@@ -6,7 +6,6 @@
 //
 import UIKit
 import Foundation
-import MultipartForm
 
 //https://openmarket.yagom-academy.kr/api/products?page_no=1&items_per_page=20  == getProductList
 //https://openmarket.yagom-academy.kr/api/products/32 == getProduct
@@ -15,10 +14,8 @@ import MultipartForm
 // var secret: String = "bjv33pu73cbajp1"
 // var userName: String = "red123"
 
-
-
 enum OpenMarketRequestManager {
-
+  
   case getProductList(page_no: Int = 1, items_per_page: Int = 20)
   case getProduct(_ id: Int)
   case postProduct(params: Param, images: [Data])
@@ -65,25 +62,30 @@ enum OpenMarketRequestManager {
     }
   }
   
-  private var allHTTPHeaderFields: [String: String] {
+  private var headerFields: [String: String] {
     switch self {
     case .getProductList:
       return ["Content-Type": "application/json"]
     case .getProduct:
       return ["Content-Type": "application/json"]
     case let .postProduct(params, _):
-      return ["Content-Type": "multipart/form-data; boundary=\(params.boundary)", "identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb"]
+      return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb", "Content-Type": "multipart/form-data; boundary=\(params.boundary)"]
     }
   }
   
-  private var form: Data? {
+  private var form: MultipartForm? {
     switch self {
     case .getProductList:
       return nil
     case .getProduct:
       return nil
     case let .postProduct(params, images):
-      return makeMultiPartFormData(params: params, images: images)
+      
+      let paramsData = try! JSONEncoder().encode(params)
+      var multipartFormParts: [Datapart] = []
+      images.forEach { multipartFormParts.append(Datapart(name: "images", data: $0, filename: "", contentType: "image/jpeg"))}
+      multipartFormParts.append(Datapart(name: "params", data: paramsData, filename: "", contentType: "application/json"))
+      return  MultipartForm(parts: multipartFormParts, boundary: params.boundary)
     }
   }
   
@@ -97,43 +99,14 @@ enum OpenMarketRequestManager {
     var request = URLRequest(url: (components?.url)!)
     request.httpMethod = method.rawValue
     
-    allHTTPHeaderFields.forEach {
+    headerFields.forEach {
       request.addValue($0.value, forHTTPHeaderField: $0.key)
     }
-
-    request.httpBody = form
+    
+    if let form = form {
+      request.httpBody = form.bodyData
+    }
     
     return request
-  }
-}
-
-extension OpenMarketRequestManager {
-  private func makeMultiPartFormData(params: Param, images: [Data]) -> Data {
-    let productData = try? JSONEncoder().encode(params)
-    
-    var data = Data()
-    let boundary = params.boundary
-    
-    let newLine = "\r\n"
-    let boundaryPrefix = "--\(boundary)\r\n"
-    let boundarySuffix = "\r\n--\(boundary)--\r\n"
-    
-    data.appendString(boundaryPrefix)
-    data.appendString("Content-Disposition: form-data; name=\"params\"\r\n")
-    data.appendString("Content-Type: application/json\r\n")
-    data.appendString("\r\n")
-    data.append(productData ?? Data())
-    data.appendString(newLine)
-    
-    images.forEach { imageData in
-      data.appendString(boundaryPrefix)
-      data.appendString("Content-Disposition: form-data; name=\"images\"; filename=\"\(1231).jpg\"\r\n")
-      data.appendString("Content-Type: image/jpg\r\n\r\n")
-      data.append(imageData)
-      data.appendString(newLine)
-    }
-    data.appendString(boundarySuffix)
-    
-    return data
   }
 }
