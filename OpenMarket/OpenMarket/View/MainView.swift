@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MainView: View {
   @StateObject var vm: MainViewModel = MainViewModel()
+  let productListService = ProductListService()
+  
   
   init() {
     UITabBar.appearance().isHidden = true
@@ -16,11 +18,11 @@ struct MainView: View {
   
   var body: some View {
     TabView(selection: $vm.currentTab) {
-      Home()
+      Home(productListService: productListService)
         .tag(Tab.home)
         .setUpTab()
       
-      AddProductView()
+      AddProductView(productListService: productListService)
         .tag(Tab.productRegister)
         .setUpTab()
       

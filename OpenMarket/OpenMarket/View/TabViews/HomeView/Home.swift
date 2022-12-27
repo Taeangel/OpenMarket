@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct Home: View {
-  @StateObject var vm: HomeViewModel = HomeViewModel()
+  @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
 
+  init(productListService: ProductListService) {
+    self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
+  }
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       title

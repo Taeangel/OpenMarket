@@ -9,8 +9,13 @@ import SwiftUI
 import Photos
 
 struct AddProductView: View {
-  @StateObject var vm: AddProductViewModel = AddProductViewModel()
+  @StateObject var vm: AddProductViewModel
   @State var showPicker: Bool = false
+  
+  init(productListService: ProductListService) {
+    self._vm = StateObject(wrappedValue: AddProductViewModel(productListService: productListService))
+  }
+  
   var body: some View {
     
     Form {
@@ -25,6 +30,7 @@ struct AddProductView: View {
       
       Button {
         vm.postProduct()
+        
       } label: {
         Text("상품등록")
       }
@@ -125,6 +131,6 @@ struct AddProductView: View {
 
 struct AddProductView_Previews: PreviewProvider {
   static var previews: some View {
-    AddProductView()
+    MainView()
   }
 }

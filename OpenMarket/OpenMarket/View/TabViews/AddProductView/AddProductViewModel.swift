@@ -10,8 +10,10 @@ import SwiftUI
 import Combine
 
 class AddProductViewModel: ProductValidationViewModel {
+  private weak var productListService: ProductListService?
   
-  override init() {
+  init(productListService: ProductListService) {
+    self.productListService = productListService
     super.init()
     self.addSubscriber()
   }
@@ -21,9 +23,23 @@ class AddProductViewModel: ProductValidationViewModel {
   }
   
   func postProduct() {
-    Provider.shared.requestPublisher(.postProduct(params: makeProduct(), images:  convertImageToData()))
-      .sink(receiveCompletion: Provider.shared.handleCompletion) {  _ in }
+    productListService?.postProduct(parms: makeProduct(), images: convertImageToData())
+      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
+        self?.productListService?.productList = try! JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+      }
       .store(in: &cancellable)
+    cleanAddView()
+  }
+  
+  private func cleanAddView() {
+    self.images = []
+    self.productName = ""
+    self.price = ""
+    self.discountPrice = ""
+    self.stock = ""
+    self.productDescription = ""
+    self.informationError = ""
+    self.currency = .KRW
   }
 }
 

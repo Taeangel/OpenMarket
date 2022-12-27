@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class ProductListService {
   
@@ -27,11 +28,29 @@ class ProductListService {
   }
   
   func getProductList() {
-    
     Provider.shared.requestPublisher(.getProductList())
       .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
         self?.productList = try! JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
       }
       .store(in: &cancellable)
   }
+  
+  
+//  func postProduct(parms: Product, images: [Data]) {
+//    Provider.shared.requestPublisher(.postProduct(params: parms, images: images))
+//      .sink(receiveCompletion: Provider.shared.handleCompletion) {  _ in }
+//      .store(in: &cancellable)
+//  }
+  
+  func postProduct(parms: Product, images: [Data]) -> AnyPublisher<Data, NetworkErrorError> {
+    Provider.shared.requestPublisher(.postProduct(params: parms, images: images))
+      .flatMap { _ in
+        Provider.shared.requestPublisher(.getProductList())
+      }
+      .compactMap { $0 }
+      .eraseToAnyPublisher()
+  }
+  
+  
+  
 }

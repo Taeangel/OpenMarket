@@ -11,7 +11,6 @@ import Combine
 
 class ModiftViewModel: ProductValidationViewModel {
   @Published var showDetailView: Bool = false
-  
   var imageURL: [ProductImage] = []
   let productService: ProductService
   var productId: Int
@@ -42,7 +41,7 @@ class ModiftViewModel: ProductValidationViewModel {
       }
       .store(in: &cancellalbes)
   }
-  
+   
   func modifyProduct() {
     Provider.shared.requestPublisher(.modifyProduct(id: productId, product: makeProduct()))
       .sink { completion in
