@@ -20,7 +20,7 @@ class ProductService {
     return $product
   }
   
-  private var coinSubscription = Set<AnyCancellable>()
+  private var cancellable = Set<AnyCancellable>()
   
   init(id: Int) {
     getProduct(id)
@@ -31,6 +31,6 @@ class ProductService {
       .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProduct in
         self?.product = try! JSONDecoder().decode(ProductModel.self, from: returnedProduct)
       }
-      .store(in: &coinSubscription)
+      .store(in: &cancellable)
   }
 }

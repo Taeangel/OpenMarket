@@ -53,7 +53,7 @@ extension Provider {
     case 204:
       throw NetworkErrorError.noContent
     default:
-      print("default")
+      print("pass")
     }
     
     if !(200...299).contains(httpResponse.statusCode) {

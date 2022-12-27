@@ -13,8 +13,8 @@ struct Home: View {
 
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
+      title
       VStack(spacing: 15) {
-        title
         
         SearchBarView(seachText: $vm.searchText)
         
@@ -25,6 +25,7 @@ struct Home: View {
     }
     .background(Color.theme.background)
   }
+    
 }
 
 struct Home_Previews: PreviewProvider {

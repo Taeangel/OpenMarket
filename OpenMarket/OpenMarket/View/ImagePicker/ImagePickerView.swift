@@ -51,7 +51,7 @@ struct PopupImagePockerView: View {
               }
           }
         }
-        .padding( )
+        .padding()
       }
       .safeAreaInset(edge: .bottom) {
         Button {
