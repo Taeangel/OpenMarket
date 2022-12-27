@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
   @StateObject var vm: MainViewModel = MainViewModel()
-  let productListService = ProductListService()
+  let productListService = ProductMainService()
   
   
   init() {
@@ -38,6 +38,7 @@ struct MainView: View {
     .overlay(alignment: .bottom) {
       CustomTabBar(currentTab: $vm.currentTab)
     }
+    .onAppear(perform:  UIApplication.shared.hideKeyboard)
   }
 }
 

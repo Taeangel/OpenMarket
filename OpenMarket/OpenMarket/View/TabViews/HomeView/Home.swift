@@ -11,7 +11,7 @@ struct Home: View {
   @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
 
-  init(productListService: ProductListService) {
+  init(productListService: ProductMainService) {
     self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
   }
   var body: some View {

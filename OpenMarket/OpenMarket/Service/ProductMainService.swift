@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ProductListService {
+class ProductMainService {
   
   @Published var productList: ProductListModel?
   
@@ -35,13 +35,6 @@ class ProductListService {
       .store(in: &cancellable)
   }
   
-  
-//  func postProduct(parms: Product, images: [Data]) {
-//    Provider.shared.requestPublisher(.postProduct(params: parms, images: images))
-//      .sink(receiveCompletion: Provider.shared.handleCompletion) {  _ in }
-//      .store(in: &cancellable)
-//  }
-  
   func postProduct(parms: Product, images: [Data]) -> AnyPublisher<Data, NetworkErrorError> {
     Provider.shared.requestPublisher(.postProduct(params: parms, images: images))
       .flatMap { _ in
@@ -50,7 +43,4 @@ class ProductListService {
       .compactMap { $0 }
       .eraseToAnyPublisher()
   }
-  
-  
-  
 }

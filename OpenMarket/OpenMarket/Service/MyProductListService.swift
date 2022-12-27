@@ -27,11 +27,11 @@ class MyProductListService {
   }
   
   func getMyProductList() {
-    
     Provider.shared.requestPublisher(.getMyProductList())
       .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
         self?.myProductList = try! JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
       }
       .store(in: &cancellable)
   }
+  
 }

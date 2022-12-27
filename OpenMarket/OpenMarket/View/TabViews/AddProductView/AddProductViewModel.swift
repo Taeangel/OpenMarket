@@ -10,16 +10,16 @@ import SwiftUI
 import Combine
 
 class AddProductViewModel: ProductValidationViewModel {
-  private weak var productListService: ProductListService?
+  private weak var productListService: ProductMainService?
   
-  init(productListService: ProductListService) {
+  init(productListService: ProductMainService) {
     self.productListService = productListService
     super.init()
     self.addSubscriber()
   }
   
   private func convertImageToData() -> [Data] {
-    return images.map { $0.jpegData(compressionQuality: 0.01) ?? Data() }
+    return images.map { $0.jpegData(compressionQuality: 0.1) ?? Data() }
   }
   
   func postProduct() {
@@ -44,7 +44,6 @@ class AddProductViewModel: ProductValidationViewModel {
 }
 
 class ProductValidationViewModel: ObservableObject {
-  
   @Published var images: [UIImage] = []
   @Published var productName: String = ""
   @Published var price: String = ""
