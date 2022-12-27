@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ImageView: View {
   @StateObject private var vm: ImageViewModel
-
   
   init(url: URL) {
     _vm = StateObject(wrappedValue: ImageViewModel(url: url))

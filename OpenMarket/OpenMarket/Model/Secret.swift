@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct SecretModel: Encodable {
+struct Secret: Encodable {
   let secret: String = "bjv33pu73cbajp1"
 }

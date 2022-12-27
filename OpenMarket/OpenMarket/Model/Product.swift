@@ -1,5 +1,5 @@
 //
-//  Param.swift
+//  Product.swift
 //  OpenMarket
 //
 //  Created by song on 2022/12/26.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Param: Encodable {
+struct Product: Encodable {
   let name: String
   let description: String
   let price: Int

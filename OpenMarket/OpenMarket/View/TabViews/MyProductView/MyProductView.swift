@@ -26,7 +26,6 @@ struct MyProductView: View {
     }
     .background(Color.theme.background)
   }
-    
 }
 
 struct MyProductView_Previews: PreviewProvider {
@@ -143,7 +142,7 @@ extension MyProductView {
               }
               
               Button {
-                
+                coordinator.show(.modift(product: page))
               } label: {
                 Text("수정")
                   .font(.callout)

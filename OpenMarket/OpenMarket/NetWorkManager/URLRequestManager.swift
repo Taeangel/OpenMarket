@@ -11,7 +11,8 @@ import Foundation
 //https://openmarket.yagom-academy.kr/api/products/32 == getProduct
 //https://openmarket.yagom-academy.kr/api/products?page_no=1&items_per_page=100&search_value=red  == get myProductList
 //https://openmarket.yagom-academy.kr/api/products/1610/archived == productDeletionURISearch
-//https://openmarket.yagom-academy.kr/api/products//api/products/MTYyNHw4M2I2YWNiNC04NTc4LTExZWQtYmUxMC03M2U3MGRlNWY4YjA= ==
+//https://openmarket.yagom-academy.kr/api/products//api/products/MTYyNHw4M2I2YWNiNC04NTc4LTExZWQtYmUxMC03M2U3MGRlNWY4YjA= == deleteProduct
+//https://openmarket.yagom-academy.kr/api/products/1624 == modifyProduct
 
 // var identifier: String = "81da9d11-4b9d-11ed-a200-81a344d1e7cb"
 // var secret: String = "bjv33pu73cbajp1"
@@ -21,10 +22,11 @@ enum OpenMarketRequestManager {
   
   case getProductList(page_no: Int = 1, items_per_page: Int = 20)
   case getProduct(_ id: Int)
-  case postProduct(params: Param, images: [Data])
+  case postProduct(params: Product, images: [Data])
   case getMyProductList(page_no: Int = 1, items_per_page: Int = 10, search_value: String = "red")
   case productDeletionURISearch(id: Int)
   case deleteProduct(endpoint: String)
+  case modifyProduct(id: Int, product: Product)
   
   private var BaseURLString: String {
     return "https://openmarket.yagom-academy.kr"
@@ -44,6 +46,8 @@ enum OpenMarketRequestManager {
       return "/api/products/\(id)/archived"
     case let .deleteProduct(endpoint):
       return "\(endpoint)"
+    case let .modifyProduct(id, _):
+      return "/api/products/\(id)/"
     }
   }
   
@@ -61,6 +65,8 @@ enum OpenMarketRequestManager {
       return .post
     case .deleteProduct:
       return .delete
+    case .modifyProduct:
+      return .patch
     }
   }
   
@@ -85,6 +91,8 @@ enum OpenMarketRequestManager {
       return nil
     case .deleteProduct:
       return nil
+    case .modifyProduct:
+      return nil
     }
   }
   
@@ -102,6 +110,8 @@ enum OpenMarketRequestManager {
       return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb", "Content-Type": "application/json"]
     case .deleteProduct:
       return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb"]
+    case .modifyProduct:
+      return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb", "Content-Type" : "application/json"]
     }
   }
   
@@ -120,9 +130,11 @@ enum OpenMarketRequestManager {
     case .getMyProductList:
       return nil
     case .productDeletionURISearch:
-      return try? JSONEncoder().encode(SecretModel())
+      return try? JSONEncoder().encode(Secret())
     case .deleteProduct:
       return nil
+    case let .modifyProduct(_, product):
+      return try? JSONEncoder().encode(product)
     }
   }
   
