@@ -11,7 +11,7 @@ struct Home: View {
   @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
 
-  init(productListService: ProductMainService) {
+  init(productListService: AllProductListService) {
     self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
   }
   var body: some View {
@@ -28,7 +28,6 @@ struct Home: View {
     }
     .background(Color.theme.background)
   }
-    
 }
 
 struct Home_Previews: PreviewProvider {
@@ -95,7 +94,6 @@ extension Home {
   
   @ViewBuilder
   func CardView(page: Page) -> some View {
-    
     HStack(spacing: 12) {
       ImageView(url: page.thumbnailURL)
       .aspectRatio(contentMode: .fill)
@@ -150,7 +148,6 @@ extension Home {
           .offset(y: 20)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment:  .topLeading)
-      
     }
     .padding(10)
     .background {

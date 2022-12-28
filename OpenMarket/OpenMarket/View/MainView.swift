@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
   @StateObject var vm: MainViewModel = MainViewModel()
-  let productListService = ProductMainService()
+  let productListService = AllProductListService()
   
   
   init() {
@@ -30,7 +30,7 @@ struct MainView: View {
         .tag(Tab.favorite)
         .setUpTab()
       
-      MyProductView()
+      MyProductView(allPorductListService: productListService)
         .tag(Tab.myProductList)
         .setUpTab()
       

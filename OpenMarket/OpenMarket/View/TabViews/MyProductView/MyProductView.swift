@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct MyProductView: View {
-  @StateObject var vm: MyProductViewModel = MyProductViewModel()
+  @StateObject var vm: MyProductViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
 
+  
+  init(allPorductListService: AllProductListService) {
+    self._vm = StateObject(wrappedValue: MyProductViewModel(allProductListService: allPorductListService))
+    
+  }
+  
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       
@@ -142,7 +148,7 @@ extension MyProductView {
               }
               
               Button {
-                coordinator.show(.modift(product: page))
+                coordinator.show(.modify(product: page, myProductListService: vm.allProductListService))
               } label: {
                 Text("수정")
                   .font(.callout)

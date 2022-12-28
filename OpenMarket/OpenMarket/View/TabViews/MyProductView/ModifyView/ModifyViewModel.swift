@@ -14,10 +14,12 @@ class ModiftViewModel: ProductValidationViewModel {
   var imageURL: [ProductImage] = []
   let productService: ProductService
   var productId: Int
+  let allProductListService: AllProductListService
   
   private var cancellalbes = Set<AnyCancellable>()
   
-  init(id: Int) {
+  init(id: Int, myProductListService: AllProductListService) {
+    self.allProductListService = myProductListService
     self.productId = id
     self.productService = ProductService(id: id)
     super.init()
@@ -43,11 +45,22 @@ class ModiftViewModel: ProductValidationViewModel {
   }
    
   func modifyProduct() {
-    Provider.shared.requestPublisher(.modifyProduct(id: productId, product: makeProduct()))
+    allProductListService.modifyProduct(id: productId, product: makeProduct())
       .sink { completion in
         print(completion)
-      } receiveValue: { _ in
-        
-      }.store(in: &cancellalbes)
+      } receiveValue: { [weak self] returnedProductList in
+        guard let self = self else { return }
+        self.allProductListService.myProductList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self.listUpdata()
+      }
+      .store(in: &self.cancellalbes)
+  }
+  
+  private func listUpdata() {
+    Provider.shared.requestPublisher(.getProductList())
+      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
+        self?.allProductListService.productList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+      }
+      .store(in: &cancellable)
   }
 }

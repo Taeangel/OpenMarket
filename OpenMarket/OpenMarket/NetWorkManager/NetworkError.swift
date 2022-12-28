@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NetworkErrorError: Error {
+enum NetworkError: Error {
   case network(error: Error)
   case decoding(error: Error)
   case unknown
