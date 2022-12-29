@@ -10,9 +10,11 @@ import SwiftUI
 struct Home: View {
   @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
+  let favoriteProductService: FavoriteProductDataService
   
-  init(productListService: AllProductListService, favoriteCoinDataService: FavoriteCoinDataService) {
-    self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService, favoriteCoinDataService: favoriteCoinDataService))
+  init(productListService: AllProductListService, favoriteProductService: FavoriteProductDataService) {
+    self.favoriteProductService = favoriteProductService
+    self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
   }
   var body: some View {
     VStack(spacing: 0) {
@@ -132,12 +134,6 @@ extension Home {
           
           Spacer()
           
-          Button {
-            
-          } label: {
-            Image(systemName: "star")
-              .foregroundColor(Color.theme.yellow)
-          }
         }
         .offset(y: 20)
       }
@@ -151,7 +147,7 @@ extension Home {
     }
     .onTapGesture {
       withAnimation(.easeInOut) {
-        coordinator.show(.detail(product: page))
+        coordinator.show(.detail(product: page, favoriteProductService: favoriteProductService))
       }
     }
     .padding(.bottom, 6)

@@ -174,11 +174,6 @@ extension MyProductView {
         .fill(Color.theme.white)
         .shadow(color: Color.theme.black.opacity(0.08), radius: 5, x: 5, y: 5)
     }
-    .onTapGesture {
-      withAnimation(.easeInOut) {
-        coordinator.show(.detail(product: page))
-      }
-    }
-    .padding(.bottom, 6)
+
   }
 }

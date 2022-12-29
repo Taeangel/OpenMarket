@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class FavoriteCoinDataService {
+class FavoriteProductDataService {
   
   @Published var savedEntities: [ProductEntity] = []
   
@@ -26,7 +26,7 @@ class FavoriteCoinDataService {
       if let error = error {
         print("Error loading \(error)")
       }
-      self.getPortfolio()
+//      self.getPortfolio()
     }
   }
   

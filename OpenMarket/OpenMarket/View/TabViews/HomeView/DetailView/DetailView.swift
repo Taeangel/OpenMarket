@@ -12,8 +12,8 @@ struct DetailView: View {
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   @StateObject var vm: DetailViewModel
   
-  init(product: Product) {
-    self._vm = StateObject(wrappedValue: DetailViewModel(id: product.id ?? 0))
+  init(product: Product, favoriteProductService: FavoriteProductDataService) {
+    self._vm = StateObject(wrappedValue: DetailViewModel(id: product.id ?? 0, favoriteProductService: favoriteProductService))
   }
   
   var body: some View {
@@ -53,9 +53,9 @@ extension DetailView {
       Spacer()
       
       Button {
-        
+        vm.tapHeart()
       } label: {
-        Image(systemName: "suit.heart.fill")
+        Image(systemName: vm.favoriteProduct ? "suit.heart.fill" : "suit.heart")
           .foregroundColor(Color.theme.red)
           .padding(12)
           .background {

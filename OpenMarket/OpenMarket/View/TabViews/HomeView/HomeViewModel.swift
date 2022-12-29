@@ -11,13 +11,12 @@ import Combine
 class HomeViewModel: ObservableObject {
   @Published var productList: [Product]?
   @Published var searchText: String = ""
+  
   weak var productListService: AllProductListService?
-  let favoriteCoinDataService: FavoriteCoinDataService
   private var cancellalbes = Set<AnyCancellable>()
 
-  init(productListService: AllProductListService, favoriteCoinDataService: FavoriteCoinDataService) {
+  init(productListService: AllProductListService) {
     self.productListService = productListService
-    self.favoriteCoinDataService = favoriteCoinDataService
     self.addSubscribers()
   }
   

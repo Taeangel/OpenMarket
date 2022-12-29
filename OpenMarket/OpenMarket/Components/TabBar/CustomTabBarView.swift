@@ -80,7 +80,6 @@ extension CustomTabBar {
 enum Tab: String, CaseIterable {
   case home = "house.fill"
   case productRegister = "arrow.up.square"
-  case favorite = "star.fill"
   case myProductList = "person.crop.circle"
 }
 
