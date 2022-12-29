@@ -9,6 +9,7 @@ import Foundation
 
 //https://openmarket.yagom-academy.kr/api/products?page_no=1&items_per_page=20  == getProductList
 //https://openmarket.yagom-academy.kr/api/products/32 == getProduct
+//https://openmarket.yagom-academy.kr/api/products == postProduct
 //https://openmarket.yagom-academy.kr/api/products?page_no=1&items_per_page=100&search_value=red  == get myProductList
 //https://openmarket.yagom-academy.kr/api/products/1610/archived == productDeletionURISearch
 //https://openmarket.yagom-academy.kr/api/products//api/products/MTYyNHw4M2I2YWNiNC04NTc4LTExZWQtYmUxMC03M2U3MGRlNWY4YjA= == deleteProduct
@@ -96,16 +97,16 @@ enum OpenMarketRequestManager {
     }
   }
   
-  private var headerFields: [String: String] {
+  private var headerFields: [String: String]? {
     switch self {
     case .getProductList:
-      return ["Content-Type": "application/json"]
+      return nil
     case .getProduct:
-      return ["Content-Type": "application/json"]
+      return nil
     case let .postProduct(params, _):
       return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb", "Content-Type": "multipart/form-data; boundary=\(params.boundary)"]
     case .getMyProductList:
-      return ["Content-Type": "application/json"]
+      return nil
     case .productDeletionURISearch:
       return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb", "Content-Type": "application/json"]
     case .deleteProduct:
@@ -138,7 +139,7 @@ enum OpenMarketRequestManager {
     }
   }
   
-  var asURLRequest: URLRequest {
+  var urlRequest: URLRequest {
     var components = URLComponents(string: BaseURLString + endPoint)
     
     if let parameters {
@@ -147,11 +148,13 @@ enum OpenMarketRequestManager {
       }
     }
     
-    var request = URLRequest(url: (components?.url)!)
+    var request = URLRequest(url: (components?.url) ?? URL(fileURLWithPath: ""))
     request.httpMethod = method.rawValue
     
-    headerFields.forEach {
-      request.addValue($0.value, forHTTPHeaderField: $0.key)
+    if let headerFields {
+      headerFields.forEach {
+        request.addValue($0.value, forHTTPHeaderField: $0.key)
+      }
     }
     
     if let form  {

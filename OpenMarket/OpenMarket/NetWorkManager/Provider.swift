@@ -13,7 +13,7 @@ struct Provider {
   private init() {}
   
   func requestPublisher(_ request: OpenMarketRequestManager) -> AnyPublisher<Data, NetworkError> {
-    return URLSession.shared.dataTaskPublisher(for: request.asURLRequest)
+    return URLSession.shared.dataTaskPublisher(for: request.urlRequest)
       .tryMap(filterURLData)
       .mapError(convertToNetworkError)
       .eraseToAnyPublisher()

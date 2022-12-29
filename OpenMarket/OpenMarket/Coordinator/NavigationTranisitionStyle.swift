@@ -13,4 +13,3 @@ enum NavigationTranisitionStyle {
   case presentFullscreen
   case presentHalfModally
 }
-
