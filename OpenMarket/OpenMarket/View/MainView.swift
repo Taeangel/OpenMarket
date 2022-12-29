@@ -10,7 +10,7 @@ import SwiftUI
 struct MainView: View {
   @StateObject var vm: MainViewModel = MainViewModel()
   let productListService = AllProductListService()
-  
+  let favoriteCoinDataService = FavoriteCoinDataService()
   
   init() {
     UITabBar.appearance().isHidden = true
@@ -18,7 +18,7 @@ struct MainView: View {
   
   var body: some View {
     TabView(selection: $vm.currentTab) {
-      Home(productListService: productListService)
+      Home(productListService: productListService,favoriteCoinDataService: favoriteCoinDataService)
         .tag(Tab.home)
         .setUpTab()
       
@@ -26,7 +26,7 @@ struct MainView: View {
         .tag(Tab.productRegister)
         .setUpTab()
       
-      FavoriteProductsView(allPorductListService: productListService)
+      FavoriteProductsView(allPorductListService: productListService, favoriteCoinDataService: favoriteCoinDataService)
         .tag(Tab.favorite)
         .setUpTab()
       

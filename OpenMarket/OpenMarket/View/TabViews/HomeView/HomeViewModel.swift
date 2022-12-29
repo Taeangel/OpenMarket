@@ -12,19 +12,20 @@ class HomeViewModel: ObservableObject {
   @Published var productList: [Product]?
   @Published var searchText: String = ""
   weak var productListService: AllProductListService?
+  let favoriteCoinDataService: FavoriteCoinDataService
   private var cancellalbes = Set<AnyCancellable>()
 
-  init(productListService: AllProductListService) {
+  init(productListService: AllProductListService, favoriteCoinDataService: FavoriteCoinDataService) {
     self.productListService = productListService
+    self.favoriteCoinDataService = favoriteCoinDataService
     self.addSubscribers()
-
   }
+  
   private func addSubscribers() {
     productListService?.productListPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] returnedProductList in
         guard let self = self else { return }
-        guard let returnedProductList = returnedProductList else { return }
         self.productList = returnedProductList
       }
       .store(in: &cancellalbes)

@@ -11,8 +11,8 @@ struct Home: View {
   @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   
-  init(productListService: AllProductListService) {
-    self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
+  init(productListService: AllProductListService, favoriteCoinDataService: FavoriteCoinDataService) {
+    self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService, favoriteCoinDataService: favoriteCoinDataService))
   }
   var body: some View {
     VStack(spacing: 0) {
@@ -79,12 +79,20 @@ extension Home {
   
   private var cell: some View {
     ScrollView(showsIndicators: false) {
-      ForEach(vm.productList ?? []) { page in
-        CardView(page: page)
+      LazyVStack {
+        ForEach(vm.productList ?? []) { page in
+          CardView(page: page)
+            .onAppear {
+              if vm.productList?.last == page {
+                vm.productListService?.getProduct()
+              }
+            }
+        }
       }
     }
     .padding(.bottom, 4)
     .padding(.horizontal, 5)
+    
   }
   
   @ViewBuilder

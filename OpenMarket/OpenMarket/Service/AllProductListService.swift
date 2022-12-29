@@ -11,45 +11,51 @@ import SwiftUI
 
 class AllProductListService {
   
-  @Published var productList: [Product]?
-  var productListPublisher: Published<[Product]?>.Publisher { return $productList }
+  @Published var productList: [Product] = []
+  var productListPublisher: Published<[Product]>.Publisher { return $productList }
   
-  @Published var myProductList: [Product]?
-  var myProductListPublisher: Published<[Product]?>.Publisher { return $myProductList }
+  @Published var myProductList: [Product] = []
+  var myProductListPublisher: Published<[Product]>.Publisher { return $myProductList }
   
   private var cancellable = Set<AnyCancellable>()
   
+  var pageNumber = 2
+  
   init() {
-    addSubscriber()
+    initMethod()
   }
   
-  private func addSubscriber() {
+  private func initMethod() {
     ApiManager.shared.requestPublisher(.getProductList())
       .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.productList = productListModel?.pages
+        self?.productList = productListModel?.pages ?? []
       }
       .store(in: &cancellable)
     
     ApiManager.shared.requestPublisher(.getMyProductList())
       .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.myProductList = productListModel?.pages
+        self?.myProductList = productListModel?.pages ?? []
       }
       .store(in: &cancellable)
   }
   
-  func getProduct(pageNumber: Int) {
+  func getProduct() {
     ApiManager.shared.requestPublisher(.getProductList(page_no: pageNumber))
       .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.productList = productListModel?.pages
+        self?.productList += productListModel?.pages ?? []
       }
       .store(in: &cancellable)
+    
+    pageNumber += 1
   }
   
   func postProduct(parms: ProductEncodeModel, images: [Data]) -> AnyPublisher<Data, NetworkError> {
-    ApiManager.shared.requestPublisher(.postProduct(params: parms, images: images))
+    pageNumber = 2
+    
+    return ApiManager.shared.requestPublisher(.postProduct(params: parms, images: images))
       .flatMap { _ in
         ApiManager.shared.requestPublisher(.getMyProductList())
       }
@@ -57,7 +63,9 @@ class AllProductListService {
   }
   
   func deleteProduct(endPoint: String) -> AnyPublisher<Data, NetworkError> {
-    ApiManager.shared.requestPublisher(.deleteProduct(endpoint: endPoint))
+    pageNumber = 2
+    
+    return ApiManager.shared.requestPublisher(.deleteProduct(endpoint: endPoint))
       .flatMap { _ in
         ApiManager.shared.requestPublisher(.getMyProductList())
       }
@@ -65,7 +73,9 @@ class AllProductListService {
   }
   
   func modifyProduct(id: Int, product: ProductEncodeModel) -> AnyPublisher<Data, NetworkError> {
-    ApiManager.shared.requestPublisher(.modifyProduct(id: id, product: product))
+    pageNumber = 2
+    
+    return ApiManager.shared.requestPublisher(.modifyProduct(id: id, product: product))
       .flatMap { _ in
         ApiManager.shared.requestPublisher(.getMyProductList())
       }

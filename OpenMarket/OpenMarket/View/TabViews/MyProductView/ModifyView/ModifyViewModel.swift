@@ -51,7 +51,7 @@ class ModiftViewModel: ProductValidationViewModel {
       } receiveValue: { [weak self] returnedProductList in
         guard let self = self else { return }
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self.allProductListService.myProductList = productListModel?.pages
+        self.allProductListService.myProductList = productListModel?.pages ?? []
         self.listUpdata()
       }
       .store(in: &self.cancellalbes)
@@ -61,7 +61,7 @@ class ModiftViewModel: ProductValidationViewModel {
     ApiManager.shared.requestPublisher(.getProductList())
       .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.allProductListService.productList = productListModel?.pages
+        self?.allProductListService.productList = productListModel?.pages ?? []
       }
       .store(in: &cancellable)
   }
