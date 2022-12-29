@@ -1,5 +1,5 @@
 //
-//  Color+EX.swift
+//  Color.swift
 //  OpenMarket
 //
 //  Created by song on 2022/12/23.
@@ -23,6 +23,7 @@ struct ColorTheme {
   let white = Color("WhiteColor")
   let tabBarBackground = Color("TabBarBackground")
   let ImageBackgroundColor = Color("ImageBackgroundColor")
+  let yellow = Color("YellowColor")
 }
 
 extension Data {

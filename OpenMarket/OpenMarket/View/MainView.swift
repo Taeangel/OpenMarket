@@ -26,7 +26,7 @@ struct MainView: View {
         .tag(Tab.productRegister)
         .setUpTab()
       
-      Text("Favorite")
+      FavoriteProductsView(allPorductListService: productListService)
         .tag(Tab.favorite)
         .setUpTab()
       

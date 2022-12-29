@@ -11,11 +11,11 @@ import SwiftUI
 
 class AllProductListService {
   
-  @Published var productList: ProductListModel?
-  var productListPublisher: Published<ProductListModel?>.Publisher { return $productList }
+  @Published var productList: [Product]?
+  var productListPublisher: Published<[Product]?>.Publisher { return $productList }
   
-  @Published var myProductList: ProductListModel?
-  var myProductListPublisher: Published<ProductListModel?>.Publisher { return $myProductList }
+  @Published var myProductList: [Product]?
+  var myProductListPublisher: Published<[Product]?>.Publisher { return $myProductList }
   
   private var cancellable = Set<AnyCancellable>()
   
@@ -23,47 +23,58 @@ class AllProductListService {
     addSubscriber()
   }
   
-  func addSubscriber() {
-    Provider.shared.requestPublisher(.getProductList())
-      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
-        self?.productList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+  private func addSubscriber() {
+    ApiManager.shared.requestPublisher(.getProductList())
+      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+        let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self?.productList = productListModel?.pages
       }
       .store(in: &cancellable)
     
-    Provider.shared.requestPublisher(.getMyProductList())
-      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
-        self?.myProductList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+    ApiManager.shared.requestPublisher(.getMyProductList())
+      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+        let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self?.myProductList = productListModel?.pages
       }
       .store(in: &cancellable)
   }
   
-  func postProduct(parms: Product, images: [Data]) -> AnyPublisher<Data, NetworkError> {
-    Provider.shared.requestPublisher(.postProduct(params: parms, images: images))
+  func getProduct(pageNumber: Int) {
+    ApiManager.shared.requestPublisher(.getProductList(page_no: pageNumber))
+      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+        let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self?.productList = productListModel?.pages
+      }
+      .store(in: &cancellable)
+  }
+  
+  func postProduct(parms: ProductEncodeModel, images: [Data]) -> AnyPublisher<Data, NetworkError> {
+    ApiManager.shared.requestPublisher(.postProduct(params: parms, images: images))
       .flatMap { _ in
-        Provider.shared.requestPublisher(.getMyProductList())
+        ApiManager.shared.requestPublisher(.getMyProductList())
       }
       .eraseToAnyPublisher()
   }
   
   func deleteProduct(endPoint: String) -> AnyPublisher<Data, NetworkError> {
-    Provider.shared.requestPublisher(.deleteProduct(endpoint: endPoint))
+    ApiManager.shared.requestPublisher(.deleteProduct(endpoint: endPoint))
       .flatMap { _ in
-        Provider.shared.requestPublisher(.getMyProductList())
+        ApiManager.shared.requestPublisher(.getMyProductList())
       }
       .eraseToAnyPublisher()
   }
   
-  func modifyProduct(id: Int, product: Product) -> AnyPublisher<Data, NetworkError> {
-    Provider.shared.requestPublisher(.modifyProduct(id: id, product: product))
+  func modifyProduct(id: Int, product: ProductEncodeModel) -> AnyPublisher<Data, NetworkError> {
+    ApiManager.shared.requestPublisher(.modifyProduct(id: id, product: product))
       .flatMap { _ in
-        Provider.shared.requestPublisher(.getMyProductList())
+        ApiManager.shared.requestPublisher(.getMyProductList())
       }
       .eraseToAnyPublisher()
   }
   
   private func mergeProductLists() -> AnyPublisher<Data, NetworkError> {
-    Publishers.Merge(Provider.shared.requestPublisher(.getMyProductList()),
-                     Provider.shared.requestPublisher(.getProductList()))
-      .eraseToAnyPublisher()
+    Publishers.Merge(ApiManager.shared.requestPublisher(.getMyProductList()),
+                     ApiManager.shared.requestPublisher(.getProductList()))
+    .eraseToAnyPublisher()
   }
 }

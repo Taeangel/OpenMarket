@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct SearchBarView: View {
-  
   @Binding var seachText: String
-  
   
   var body: some View {
     HStack {
@@ -18,7 +16,7 @@ struct SearchBarView: View {
         .foregroundColor(
           seachText.isEmpty ? Color.theme.secondaryText : Color.theme.accent )
       
-      TextField("Search by name or symbol...", text: $seachText)
+      TextField("검색", text: $seachText)
         .foregroundColor(Color.theme.accent)
         .autocorrectionDisabled()
         .overlay(alignment: .trailing) {
@@ -36,7 +34,7 @@ struct SearchBarView: View {
     .font(.headline)
     .padding()
     .background(
-      RoundedRectangle(cornerRadius: 4)
+      RoundedRectangle(cornerRadius: 10)
         .fill(Color.theme.background)
         .shadow(color: Color.theme.accent.opacity(0.15), radius: 10, x: 0, y: 0)
     )

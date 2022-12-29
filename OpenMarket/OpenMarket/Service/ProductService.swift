@@ -27,8 +27,8 @@ class ProductService {
   }
   
   func getProduct(_ id: Int) {
-    Provider.shared.requestPublisher(.getProduct(id))
-      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProduct in
+    ApiManager.shared.requestPublisher(.getProduct(id))
+      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProduct in
         self?.product = try! JSONDecoder().decode(ProductModel.self, from: returnedProduct)
       }
       .store(in: &cancellable)

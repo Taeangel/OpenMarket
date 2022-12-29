@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class HomeViewModel: ObservableObject {
-  @Published var productList: ProductListModel?
+  @Published var productList: [Product]?
   @Published var searchText: String = ""
   weak var productListService: AllProductListService?
   private var cancellalbes = Set<AnyCancellable>()

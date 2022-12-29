@@ -88,13 +88,13 @@ extension MyProductView {
   }
   
   private var cell: some View {
-    ForEach(vm.productList?.pages ?? []) { page in
+    ForEach(vm.productList ?? []) { page in
       CardView(page: page)
     }
   }
   
   @ViewBuilder
-  func CardView(page: Page) -> some View {
+  func CardView(page: Product) -> some View {
     
     HStack(spacing: 12) {
       ImageView(url: page.thumbnailURL)

@@ -10,21 +10,17 @@ import SwiftUI
 struct Home: View {
   @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
-
+  
   init(productListService: AllProductListService) {
     self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
   }
   var body: some View {
-    ScrollView(.vertical, showsIndicators: false) {
+    VStack(spacing: 0) {
       title
-      VStack(spacing: 15) {
-        
-        SearchBarView(seachText: $vm.searchText)
-        
-        cell
-      }
-      .padding()
-      .padding(.bottom, 100)
+      
+      SearchBarView(seachText: $vm.searchText)
+      
+      cell
     }
     .background(Color.theme.background)
   }
@@ -38,15 +34,10 @@ struct Home_Previews: PreviewProvider {
 
 extension Home {
   private var title: some View {
-    VStack(alignment: .leading, spacing: 8) {
-      Text("Best Product")
-        .font(.title.bold())
-      
-      Text("Perfect Choice!")
-        .font(.callout)
-    }
-    .foregroundColor(Color.theme.black)
-    .frame(maxWidth: .infinity, alignment: .leading)
+    Text("Choose Product")
+      .font(.title.bold())
+      .foregroundColor(Color.theme.black)
+      .frame(maxWidth: .infinity, alignment: .leading)
   }
   
   private var search: some View {
@@ -87,67 +78,62 @@ extension Home {
   }
   
   private var cell: some View {
-    ForEach(vm.productList?.pages ?? []) { page in
-      CardView(page: page)
+    ScrollView(showsIndicators: false) {
+      ForEach(vm.productList ?? []) { page in
+        CardView(page: page)
+      }
     }
+    .padding(.bottom, 4)
+    .padding(.horizontal, 5)
   }
   
   @ViewBuilder
-  func CardView(page: Page) -> some View {
+  func CardView(page: Product) -> some View {
     HStack(spacing: 12) {
       ImageView(url: page.thumbnailURL)
-      .aspectRatio(contentMode: .fill)
-
-      .frame(width: 120)
-      .clipShape(
-        RoundedRectangle(cornerRadius: 20)
-      )
-      .padding(5)
+        .aspectRatio(contentMode: .fill)
+        .frame(width: 120)
+        .clipShape(
+          RoundedRectangle(cornerRadius: 20)
+        )
+        .padding(5)
       
-        VStack(alignment: .leading, spacing: 10) {
-          Text(page.name ?? "")
-            .fontWeight(.bold)
-            .lineLimit(1)
-            .foregroundColor(Color.theme.black)
- 
-          
-          Text(page.pageDescription ?? "")
-            .font(.system(size: 12))
-            .lineLimit(2)
-            .foregroundColor(Color.theme.secondaryText)
-            .padding(.bottom, -10)
-          
-          HStack {
-            VStack(alignment: .leading) {
-              Text(page.priceString)
-                .font(.title3)
-                .foregroundColor(Color.theme.black)
-              
-              Text(page.discountedPriceString)
-                .font(.title3.bold())
-                .foregroundColor(Color.theme.red)
-            }
+      VStack(alignment: .leading, spacing: 10) {
+        Text(page.name ?? "")
+          .fontWeight(.bold)
+          .lineLimit(1)
+          .foregroundColor(Color.theme.black)
+        
+        
+        Text(page.pageDescription ?? "")
+          .font(.system(size: 12))
+          .lineLimit(2)
+          .foregroundColor(Color.theme.secondaryText)
+          .padding(.bottom, -10)
+        
+        HStack {
+          VStack(alignment: .leading) {
+            Text(page.priceString)
+              .font(.title3)
+              .foregroundColor(Color.theme.black)
             
-            Spacer()
-            
-            Button {
-              
-            } label: {
-              Text("Buy")
-                .font(.callout)
-                .fontWeight(.semibold)
-                .foregroundColor(Color.theme.white)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 20)
-                .background {
-                  Capsule()
-                    .fill(Color.theme.red)
-                }
-            }
+            Text(page.discountedPriceString)
+              .font(.title3.bold())
+              .foregroundColor(Color.theme.red)
           }
-          .offset(y: 20)
+          
+          Spacer()
+          
+          Button {
+            
+          } label: {
+            Image(systemName: "star")
+              .foregroundColor(Color.theme.yellow)
+          }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment:  .topLeading)
+        .offset(y: 20)
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment:  .topLeading)
     }
     .padding(10)
     .background {

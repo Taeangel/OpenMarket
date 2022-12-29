@@ -1,5 +1,5 @@
 //
-//  Provider.swift
+//  ApiManager.swift
 //  OpenMarket
 //
 //  Created by song on 2022/12/23.
@@ -8,8 +8,8 @@
 import Foundation
 import Combine
 
-struct Provider {
-  static let shared = Provider()
+struct ApiManager {
+  static let shared = ApiManager()
   private init() {}
   
   func requestPublisher(_ request: OpenMarketRequestManager) -> AnyPublisher<Data, NetworkError> {
@@ -29,15 +29,17 @@ struct Provider {
   }
 }
 
-extension Provider {
+extension ApiManager {
   
   private func convertToNetworkError(err: Error) -> NetworkError {
     if let error = err as? NetworkError {
       return error
     }
+    
     if let error = err as? DecodingError {
       return NetworkError.decoding(error: error)
     }
+    
     return NetworkError.unknown
   }
   
@@ -53,7 +55,7 @@ extension Provider {
     case 204:
       throw NetworkError.noContent
     default:
-      print("pass")
+      break
     }
     
     if !(200...299).contains(httpResponse.statusCode) {

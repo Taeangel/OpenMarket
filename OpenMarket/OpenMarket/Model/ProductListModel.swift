@@ -41,11 +41,11 @@ struct ProductListModel: Codable {
   let pageNo, itemsPerPage, totalCount, offset: Int?
   let limit, lastPage: Int?
   let hasNext, hasPrev: Bool?
-  let pages: [Page]?
+  let pages: [Product]?
 }
 
 // MARK: - Page
-struct Page: Codable, Identifiable {
+struct Product: Codable, Identifiable {
   let id, vendorID: Int?
   let vendorName, name, pageDescription: String?
   let thumbnail: String?

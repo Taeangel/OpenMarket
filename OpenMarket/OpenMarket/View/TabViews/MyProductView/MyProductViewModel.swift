@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class MyProductViewModel: ObservableObject {
-  @Published var productList: ProductListModel?
+  @Published var productList: [Product]?
   @Published var searchText: String = ""
   let allProductListService: AllProductListService
   private var cancellable = Set<AnyCancellable>()
@@ -31,7 +31,7 @@ class MyProductViewModel: ObservableObject {
   }
   
   func deleteProduct(_ id: Int) {
-    Provider.shared.requestPublisher(.productDeletionURISearch(id: id))
+    ApiManager.shared.requestPublisher(.productDeletionURISearch(id: id))
       .sink { completion in
         print(completion)
       } receiveValue: { data in
@@ -41,7 +41,8 @@ class MyProductViewModel: ObservableObject {
             print(completion)
           } receiveValue: { [weak self] returnedProductList in
             guard let self = self else { return }
-            self.allProductListService.myProductList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+            let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+            self.allProductListService.myProductList = productListModel?.pages
             self.listUpdata()
           }
           .store(in: &self.cancellable)
@@ -50,9 +51,10 @@ class MyProductViewModel: ObservableObject {
   }
   
   private func listUpdata() {
-    Provider.shared.requestPublisher(.getProductList())
-      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
-        self?.allProductListService.productList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+    ApiManager.shared.requestPublisher(.getProductList())
+      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+        let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self?.allProductListService.productList = productListModel?.pages
       }
       .store(in: &cancellable)
   }

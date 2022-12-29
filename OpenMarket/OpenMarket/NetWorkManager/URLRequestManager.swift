@@ -23,11 +23,11 @@ enum OpenMarketRequestManager {
   
   case getProductList(page_no: Int = 1, items_per_page: Int = 20)
   case getProduct(_ id: Int)
-  case postProduct(params: Product, images: [Data])
+  case postProduct(params: ProductEncodeModel, images: [Data])
   case getMyProductList(page_no: Int = 1, items_per_page: Int = 10, search_value: String = "red")
   case productDeletionURISearch(id: Int)
   case deleteProduct(endpoint: String)
-  case modifyProduct(id: Int, product: Product)
+  case modifyProduct(id: Int, product: ProductEncodeModel)
   
   private var BaseURLString: String {
     return "https://openmarket.yagom-academy.kr"
@@ -37,7 +37,7 @@ enum OpenMarketRequestManager {
     switch self {
     case .getProductList:
       return "/api/products?"
-    case .getProduct(let id) :
+    case let .getProduct(id) :
       return "/api/products/\(id)"
     case .postProduct:
       return "/api/products"
@@ -116,7 +116,7 @@ enum OpenMarketRequestManager {
     }
   }
   
-  private var form: Data? {
+  private var bodtData: Data? {
     switch self {
     case .getProductList:
       return nil
@@ -157,8 +157,8 @@ enum OpenMarketRequestManager {
       }
     }
     
-    if let form  {
-      request.httpBody = form
+    if let bodtData  {
+      request.httpBody = bodtData
     }
   
     return request

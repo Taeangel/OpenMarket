@@ -24,8 +24,9 @@ class AddProductViewModel: ProductValidationViewModel {
   
   func postProduct() {
     allProductListService?.postProduct(parms: makeProduct(), images: convertImageToData())
-      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
-        self?.allProductListService?.myProductList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+        let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self?.allProductListService?.myProductList = productListModel?.pages
         self?.listUpdata()
       }
       .store(in: &cancellable)
@@ -33,9 +34,10 @@ class AddProductViewModel: ProductValidationViewModel {
   }
   
   private func listUpdata() {
-    Provider.shared.requestPublisher(.getProductList())
-      .sink(receiveCompletion: Provider.shared.handleCompletion) { [weak self] returnedProductList in
-        self?.allProductListService?.productList = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+    ApiManager.shared.requestPublisher(.getProductList())
+      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+        let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self?.allProductListService?.productList = productListModel?.pages
       }
       .store(in: &cancellable)
   }
@@ -65,8 +67,8 @@ class ProductValidationViewModel: ObservableObject {
   @Published var product: ProductModel?
   var cancellable = Set<AnyCancellable>()
  
-   func makeProduct() -> Product {
-    return Product(name: productName,
+   func makeProduct() -> ProductEncodeModel {
+    return ProductEncodeModel(name: productName,
                   description: discountPrice,
                   price: Int(price) ?? 1,
                   currency: currency.rawValue,

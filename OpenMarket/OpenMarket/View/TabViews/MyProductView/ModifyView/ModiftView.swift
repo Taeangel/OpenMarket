@@ -12,7 +12,7 @@ struct ModiftView: View {
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   @StateObject var vm: ModiftViewModel
   
-  init(product: Page, myProductListService: AllProductListService) {
+  init(product: Product, myProductListService: AllProductListService) {
     self._vm = StateObject(wrappedValue: ModiftViewModel(id: product.id ?? 0, myProductListService: myProductListService))
   }
   
