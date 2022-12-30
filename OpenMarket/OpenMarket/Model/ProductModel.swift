@@ -61,6 +61,13 @@ struct ProductModel: Codable {
     }
   }
   
+  var unrappingId: Int {
+    guard let id = id else {
+      return 0
+    }
+    return id
+  }
+  
   enum CodingKeys: String, CodingKey {
     case id
     case vendorID = "vendor_id"

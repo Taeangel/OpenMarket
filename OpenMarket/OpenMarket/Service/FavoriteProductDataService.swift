@@ -26,7 +26,7 @@ class FavoriteProductDataService {
       if let error = error {
         print("Error loading \(error)")
       }
-//      self.getPortfolio()
+      self.getPortfolio()
     }
   }
   

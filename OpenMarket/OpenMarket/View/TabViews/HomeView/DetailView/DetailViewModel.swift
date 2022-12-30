@@ -13,12 +13,10 @@ class DetailViewModel: ObservableObject {
   @Published var showDetailView: Bool = false
   @Published var cartCount: Int = 0
   @Published var totolPrice: Int = 0
-  @Published var favoriteProduct: Bool = true
+  @Published var favoriteProduct: Bool = false
   let favoriteProductService: FavoriteProductDataService
   let productService: ProductService
   private var cancellalbes = Set<AnyCancellable>()
-  
-  
   
   init(id: Int, favoriteProductService: FavoriteProductDataService) {
     self.favoriteProductService = favoriteProductService
@@ -27,7 +25,6 @@ class DetailViewModel: ObservableObject {
   }
   
   private func addSubscribers(_ id: Int) {
-
     productService.productPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] returnedProduct in
@@ -44,13 +41,14 @@ class DetailViewModel: ObservableObject {
       .store(in: &cancellalbes)
 
     favoriteProductService.savedEntitiesPublisher
-      .map {[weak self] in $0.filter { $0.productId == self?.product?.id ?? 0  } }
-      .map { $0.first }
-      .sink(receiveValue: { [unowned self]  isFavorite in
-        if let isFavorite {
-          self.favoriteProduct = true
-        } else {
+      .debounce(for: 0.1, scheduler: RunLoop.main)
+      .receive(on: RunLoop.main)
+      .map { [weak self] in $0.filter { $0.productId == self?.product?.id ?? 0 } }
+      .sink(receiveValue: { [unowned self] isFavorites in
+        if isFavorites.isEmpty {
           self.favoriteProduct = false
+        } else {
+          self.favoriteProduct = true
         }
       })
       .store(in: &cancellalbes)
