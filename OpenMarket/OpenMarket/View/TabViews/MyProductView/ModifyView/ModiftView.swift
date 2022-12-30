@@ -40,7 +40,7 @@ struct ModiftView: View {
   }
 }
 
-extension ModiftView {
+fileprivate extension ModiftView {
   private var top: some View {
     HStack {
       Button {

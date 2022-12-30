@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class AddProductViewModel: ProductValidationViewModel {
+final class AddProductViewModel: ProductValidationViewModel {
   private weak var allProductListService: AllProductListService?
   @Published var showAlert: Bool = false
   @Published var isPostSuccess: Bool = false

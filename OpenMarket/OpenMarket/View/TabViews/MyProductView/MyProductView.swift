@@ -35,7 +35,7 @@ struct MyProductView: View {
       if vm.showAlert {
         CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage)
       }
-    }    
+    }
     .background(Color.theme.background)
   }
 }
@@ -46,7 +46,7 @@ struct MyProductView_Previews: PreviewProvider {
   }
 }
 
-extension MyProductView {
+fileprivate extension MyProductView {
   private var title: some View {
     VStack(alignment: .leading, spacing: 8) {
       Text("MyProduct")

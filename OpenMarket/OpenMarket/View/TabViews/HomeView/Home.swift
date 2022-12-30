@@ -16,6 +16,7 @@ struct Home: View {
     self.favoriteProductService = favoriteProductService
     self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
   }
+  
   var body: some View {
     VStack(spacing: 0) {
       title
@@ -34,7 +35,7 @@ struct Home_Previews: PreviewProvider {
   }
 }
 
-extension Home {
+fileprivate extension Home {
   private var title: some View {
     Text("Choose Product")
       .font(.title.bold())

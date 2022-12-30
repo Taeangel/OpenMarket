@@ -19,22 +19,13 @@ struct AddProductView: View {
   var body: some View {
     ZStack {
       Form {
-        Text("상품등록")
-          .font(.title3)
-          .fontWeight(.bold)
-          .foregroundColor(Color.theme.black)
+        addProductText
         
         imageView
         
         infomationSection
         
-        Button {
-          vm.postProduct()
-          
-        } label: {
-          Text("상품등록")
-        }
-        .disabled(!vm.postButtonisValid)
+        addProductButton
       }
       
       if vm.showAlert {
@@ -62,8 +53,24 @@ struct AddProductView: View {
       }
     }
   }
+}
+
+struct AddProductView_Previews: PreviewProvider {
+  static var previews: some View {
+    MainView()
+  }
+}
+
+
+fileprivate extension AddProductView {
+  private var addProductText: some View {
+    Text("상품등록")
+      .font(.title3)
+      .fontWeight(.bold)
+      .foregroundColor(Color.theme.black)
+  }
   
-  var imagePickerView: some View {
+  private var imagePickerView: some View {
     ZStack{
       Rectangle()
         .fill(Color(uiColor: UIColor.systemGray6))
@@ -80,7 +87,7 @@ struct AddProductView: View {
     }
   }
   
-  var infomationSection: some View {
+  private var infomationSection: some View {
     Section {
       TextField("상품이름", text: $vm.productName)
       HStack {
@@ -105,7 +112,7 @@ struct AddProductView: View {
     }
   }
   
-  var imageView: some View {
+  private var imageView: some View {
     ScrollView(.horizontal) {
       HStack {
         ForEach(Array(vm.images.enumerated()), id: \.offset) { (index, image) in
@@ -132,10 +139,13 @@ struct AddProductView: View {
     }
     .scrollIndicators(.hidden)
   }
-}
-
-struct AddProductView_Previews: PreviewProvider {
-  static var previews: some View {
-    MainView()
+  
+  private var addProductButton: some View {
+    Button {
+      vm.postProduct()
+    } label: {
+      Text("상품등록")
+    }
+    .disabled(!vm.postButtonisValid)
   }
 }

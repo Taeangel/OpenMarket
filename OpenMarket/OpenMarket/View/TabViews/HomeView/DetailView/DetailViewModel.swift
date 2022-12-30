@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class DetailViewModel: ObservableObject {
+final class DetailViewModel: ObservableObject {
   @Published var product: ProductModel?
   @Published var showDetailView: Bool = false
   @Published var cartCount: Int = 0

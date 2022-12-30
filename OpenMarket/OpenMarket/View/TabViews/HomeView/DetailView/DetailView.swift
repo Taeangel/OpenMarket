@@ -32,7 +32,7 @@ struct DetailView: View {
   }
 }
 
-extension DetailView {
+fileprivate extension DetailView {
   private var top: some View {
     HStack {
       Button {

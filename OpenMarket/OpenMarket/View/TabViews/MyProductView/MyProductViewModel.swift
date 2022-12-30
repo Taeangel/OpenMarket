@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class MyProductViewModel: ObservableObject {
+final class MyProductViewModel: ObservableObject {
   @Published var productList: [Product]?
   @Published var searchText: String = ""
   @Published var showAlert: Bool = false
