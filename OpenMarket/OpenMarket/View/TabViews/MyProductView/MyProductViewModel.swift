@@ -11,6 +11,10 @@ import Combine
 class MyProductViewModel: ObservableObject {
   @Published var productList: [Product]?
   @Published var searchText: String = ""
+  @Published var showAlert: Bool = false
+  @Published var isPostSuccess: Bool = false
+  @Published var alertMessage: String = ""
+  
   let allProductListService: AllProductListService
   private var cancellable = Set<AnyCancellable>()
 
@@ -31,8 +35,19 @@ class MyProductViewModel: ObservableObject {
   
   func deleteProduct(_ id: Int) {
     ApiManager.shared.requestPublisher(.productDeletionURISearch(id: id))
-      .sink { completion in
-        print(completion)
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] completion in
+        guard let self = self else { return }
+        switch completion {
+        case .finished:
+          self.showAlert = true
+          self.isPostSuccess = true
+          self.alertMessage = "Delete에 성공했습니다!"
+        case let .failure(error):
+          self.showAlert = true
+          self.isPostSuccess = false
+          self.alertMessage = "\(error)가 있습니다ㅜ"
+        }
       } receiveValue: { [weak self] data in
         guard let self = self else { return }
         guard let deleteURL = String(data: data, encoding: .utf8) else { return }

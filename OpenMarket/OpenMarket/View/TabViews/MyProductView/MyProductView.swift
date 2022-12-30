@@ -18,18 +18,24 @@ struct MyProductView: View {
   }
   
   var body: some View {
-    ScrollView(.vertical, showsIndicators: false) {
-      
-      VStack(spacing: 15) {
-        title
+    ZStack {
+      ScrollView(.vertical, showsIndicators: false) {
         
-        SearchBarView(seachText: $vm.searchText)
-        
-        cell
+        VStack(spacing: 15) {
+          title
+          
+          SearchBarView(seachText: $vm.searchText)
+          
+          cell
+        }
+        .padding()
+        .padding(.bottom, 100)
       }
-      .padding()
-      .padding(.bottom, 100)
-    }
+      
+      if vm.showAlert {
+        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage)
+      }
+    }    
     .background(Color.theme.background)
   }
 }

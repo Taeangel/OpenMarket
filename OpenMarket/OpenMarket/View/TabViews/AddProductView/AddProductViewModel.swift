@@ -11,7 +11,9 @@ import Combine
 
 class AddProductViewModel: ProductValidationViewModel {
   private weak var allProductListService: AllProductListService?
-  
+  @Published var showAlert: Bool = false
+  @Published var isPostSuccess: Bool = false
+  @Published var alertMessage: String = ""
   init(productListService: AllProductListService) {
     self.allProductListService = productListService
     super.init()
@@ -24,11 +26,24 @@ class AddProductViewModel: ProductValidationViewModel {
   
   func postProduct() {
     allProductListService?.postProduct(parms: makeProduct(), images: convertImageToData())
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+      .receive(on: DispatchQueue.main)
+      .sink(receiveCompletion: { [weak self] completion in
+        guard let self = self else { return }
+        switch completion {
+        case .finished:
+          self.showAlert = true
+          self.isPostSuccess = true
+          self.alertMessage = "Post에 성공했습니다!"
+        case let .failure(error):
+          self.showAlert = true
+          self.isPostSuccess = false
+          self.alertMessage = "\(error)가 있습니다ㅜ"
+        }
+      }, receiveValue: { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.allProductListService?.myProductList = productListModel?.pages ?? []
         self?.listUpdata()
-      }
+      })
       .store(in: &cancellable)
     cleanAddView()
   }

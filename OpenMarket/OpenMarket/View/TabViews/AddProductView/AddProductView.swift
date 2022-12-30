@@ -17,24 +17,29 @@ struct AddProductView: View {
   }
   
   var body: some View {
-    
-    Form {
-      Text("상품등록")
-        .font(.title3)
-        .fontWeight(.bold)
-        .foregroundColor(Color.theme.black)
-      
-      imageView
-      
-      infomationSection
-      
-      Button {
-        vm.postProduct()
-        
-      } label: {
+    ZStack {
+      Form {
         Text("상품등록")
+          .font(.title3)
+          .fontWeight(.bold)
+          .foregroundColor(Color.theme.black)
+        
+        imageView
+        
+        infomationSection
+        
+        Button {
+          vm.postProduct()
+          
+        } label: {
+          Text("상품등록")
+        }
+        .disabled(!vm.postButtonisValid)
       }
-      .disabled(!vm.postButtonisValid)
+      
+      if vm.showAlert {
+        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage)
+      }
     }
     .popupImagePocker(show: $showPicker) { assets in
       let manager = PHCachingImageManager.default()

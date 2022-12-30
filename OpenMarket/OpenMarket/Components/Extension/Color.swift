@@ -24,6 +24,8 @@ struct ColorTheme {
   let tabBarBackground = Color("TabBarBackground")
   let ImageBackgroundColor = Color("ImageBackgroundColor")
   let yellow = Color("YellowColor")
+  let orange = Color("OrangeColor")
+  let failColor = Color("FailColor")
 }
 
 extension Data {

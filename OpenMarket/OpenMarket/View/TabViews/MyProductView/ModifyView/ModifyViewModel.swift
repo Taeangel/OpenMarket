@@ -11,6 +11,9 @@ import Combine
 
 class ModiftViewModel: ProductValidationViewModel {
   @Published var showDetailView: Bool = false
+  @Published var showAlert: Bool = false
+  @Published var isPostSuccess: Bool = false
+  @Published var alertMessage: String = ""
   var imageURL: [ProductImage] = []
   let productService: ProductService
   var productId: Int
@@ -45,9 +48,19 @@ class ModiftViewModel: ProductValidationViewModel {
    
   func modifyProduct() {
     allProductListService.modifyProduct(id: productId, product: makeProduct())
-      .sink { completion in
-        print(completion)
-      } receiveValue: { [weak self] returnedProductList in
+      .sink{ [weak self] completion in
+        guard let self = self else { return }
+        switch completion {
+        case .finished:
+          self.showAlert = true
+          self.isPostSuccess = true
+          self.alertMessage = "Delete에 성공했습니다!"
+        case let .failure(error):
+          self.showAlert = true
+          self.isPostSuccess = false
+          self.alertMessage = "\(error)가 있습니다ㅜ"
+        }
+      }receiveValue: { [weak self] returnedProductList in
         guard let self = self else { return }
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self.allProductListService.myProductList = productListModel?.pages ?? []

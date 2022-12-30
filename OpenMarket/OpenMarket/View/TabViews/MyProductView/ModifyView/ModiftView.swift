@@ -18,19 +18,19 @@ struct ModiftView: View {
   
   var body: some View {
     top
-    Form {
-            
-      images
-      
-      infomationSection
-      
-      Button {
-        vm.modifyProduct()
-      } label: {
-        Text("상품수정")
+    ZStack {
+      Form {
+        
+        images
+        
+        infomationSection
+        
+        registerButtonView
       }
-      .disabled(!vm.postButtonisValid)
       
+      if vm.showAlert {
+        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage)
+      }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     .background {
@@ -65,17 +65,6 @@ extension ModiftView {
       
       Spacer()
       
-      Button {
-        
-      } label: {
-        Image(systemName: "suit.heart.fill")
-          .foregroundColor(Color.theme.red)
-          .padding(12)
-          .background {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-              .fill(Color.theme.white)
-          }
-      }
     }
     .padding()
   }
@@ -133,5 +122,12 @@ extension ModiftView {
     }
   }
   
-  
+  private var registerButtonView: some View {
+    Button {
+      vm.modifyProduct()
+    } label: {
+      Text("상품수정")
+    }
+    .disabled(!vm.postButtonisValid)
+  }
 }
