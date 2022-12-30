@@ -33,7 +33,8 @@ class MyProductViewModel: ObservableObject {
     ApiManager.shared.requestPublisher(.productDeletionURISearch(id: id))
       .sink { completion in
         print(completion)
-      } receiveValue: { data in
+      } receiveValue: { [weak self] data in
+        guard let self = self else { return }
         guard let deleteURL = String(data: data, encoding: .utf8) else { return }
         self.allProductListService.deleteProduct(endPoint: deleteURL)
           .sink { completion in

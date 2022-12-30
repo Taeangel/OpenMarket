@@ -15,7 +15,6 @@ class ModiftViewModel: ProductValidationViewModel {
   let productService: ProductService
   var productId: Int
   let allProductListService: AllProductListService
-  
   private var cancellalbes = Set<AnyCancellable>()
   
   init(id: Int, myProductListService: AllProductListService) {
@@ -64,5 +63,9 @@ class ModiftViewModel: ProductValidationViewModel {
         self?.allProductListService.productList = productListModel?.pages ?? []
       }
       .store(in: &cancellable)
+  }
+  
+  deinit {
+    cancellalbes.removeAll()
   }
 }
