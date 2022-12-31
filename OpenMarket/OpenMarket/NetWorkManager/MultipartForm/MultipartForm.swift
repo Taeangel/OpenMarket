@@ -52,7 +52,7 @@ struct Datapart: Hashable, Equatable {
   }
 }
 
-extension Data {
+fileprivate extension Data {
   mutating func append(_ string: String) {
     self.append(string.data(using: .utf8, allowLossyConversion: true)!)
   }

@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class AllProductListService {
+final class AllProductListService {
   
   @Published var productList: [Product] = []
   var productListPublisher: Published<[Product]>.Publisher { return $productList }

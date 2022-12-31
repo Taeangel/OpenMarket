@@ -9,10 +9,9 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ImageService {
+final class ImageService {
 
   @Published var image: UIImage? = nil
-
   private var subscription: AnyCancellable?
   private var url: URL
   private let imageDownloader = ImageProvider()

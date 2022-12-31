@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class FavoriteProductDataService {
+final class FavoriteProductDataService {
   
   @Published var savedEntities: [ProductEntity] = []
   

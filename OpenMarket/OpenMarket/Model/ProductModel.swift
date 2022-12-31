@@ -41,7 +41,6 @@
 
 import Foundation
 
-// MARK: - Product
 struct ProductModel: Codable {
   let id, vendorID: Int?
   let name, productDescription: String?
@@ -51,7 +50,6 @@ struct ProductModel: Codable {
   let createdAt, issuedAt: String?
   let images: [ProductImage]
   let vendors: Vendors?
-  
   
   var moneySign: String {
     if currency == "USD" {

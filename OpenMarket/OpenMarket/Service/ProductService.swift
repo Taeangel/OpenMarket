@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class ProductService {
+final class ProductService {
   
   @Published var product: ProductModel?
   
