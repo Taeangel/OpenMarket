@@ -27,7 +27,7 @@ struct MainView: View {
         .setUpTab()
       
       
-      MyProductView(allPorductListService: productListService)
+      MyProductView(productListService: productListService)
         .tag(Tab.myProductList)
         .setUpTab()
       

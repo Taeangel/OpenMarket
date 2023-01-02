@@ -11,8 +11,8 @@ struct MyProductView: View {
   @StateObject var vm: MyProductViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   
-  init(allPorductListService: ProductNetworkService) {
-    self._vm = StateObject(wrappedValue: MyProductViewModel(allProductListService: allPorductListService))
+  init(productListService: ProductEditProtocol) {
+    self._vm = StateObject(wrappedValue: MyProductViewModel(allProductListService: productListService))
   }
   
   var body: some View {
@@ -21,8 +21,6 @@ struct MyProductView: View {
         
         VStack(spacing: 15) {
           title
-          
-          SearchBarView(seachText: $vm.searchText)
           
           cell
         }
@@ -52,43 +50,6 @@ fileprivate extension MyProductView {
     }
     .foregroundColor(Color.theme.black)
     .frame(maxWidth: .infinity, alignment: .leading)
-  }
-  
-  private var search: some View {
-    HStack {
-      HStack(spacing: 12) {
-        Image(systemName: "magnifyingglass")
-          .resizable()
-          .renderingMode(.template)
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 25, height: 25)
-          .foregroundColor(Color.theme.black)
-        
-        TextField("Search", text: .constant(""))
-      }
-      .padding(.horizontal)
-      .padding(.vertical, 12)
-      .background{
-        RoundedRectangle(cornerRadius: 10,style: .continuous)
-          .fill(Color.theme.white)
-      }
-      
-      Button {
-        
-      } label: {
-        Image(systemName: "slider.horizontal.3")
-          .resizable()
-          .renderingMode(.template)
-          .aspectRatio(contentMode: .fit)
-          .foregroundColor(Color.theme.black)
-          .frame(width: 25, height: 25)
-          .padding(12)
-          .background{
-            RoundedRectangle(cornerRadius: 10,style: .continuous)
-              .fill(Color.theme.white)
-          }
-      }
-    }
   }
   
   private var cell: some View {

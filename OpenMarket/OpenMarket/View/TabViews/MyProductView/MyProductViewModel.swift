@@ -54,8 +54,8 @@ final class MyProductViewModel: ObservableObject {
         guard let self = self else { return }
         guard let deleteURL = String(data: data, encoding: .utf8) else { return }
         self.myProductListService.deleteProduct(endPoint: deleteURL)
-          .sink { completion in
-            print(completion)
+          .sink { _ in
+            
           } receiveValue: { [weak self] returnedProductList in
             guard let self = self else { return }
             let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)

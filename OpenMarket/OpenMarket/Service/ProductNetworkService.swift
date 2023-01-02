@@ -63,7 +63,7 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
       }
       .store(in: &cancellable)
     
-    openMarketNetwork.requestPublisher(.getProductList())
+    openMarketNetwork.requestPublisher(.getMyProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.myProductList = productListModel?.pages ?? []
