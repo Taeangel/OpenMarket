@@ -12,7 +12,7 @@ struct DetailView: View {
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   @StateObject var vm: DetailViewModel
   
-  init(product: Product, favoriteProductService: FavoriteProductDataService) {
+  init(product: Product, favoriteProductService: FavoriteProductDataProtocol) {
     self._vm = StateObject(wrappedValue: DetailViewModel(id: product.id ?? 0, favoriteProductService: favoriteProductService))
   }
   

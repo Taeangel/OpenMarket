@@ -8,7 +8,13 @@
 import Foundation
 import CoreData
 
-final class FavoriteProductDataService {
+protocol FavoriteProductDataProtocol {
+  var savedEntities: [ProductEntity] { get set }
+  var savedEntitiesPublisher: Published<[ProductEntity]>.Publisher { get }
+  func updateFavoriteProduct(id: Int)
+}
+
+final class FavoriteProductDataService: FavoriteProductDataProtocol {
   
   @Published var savedEntities: [ProductEntity] = []
   

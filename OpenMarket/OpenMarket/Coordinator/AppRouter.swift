@@ -9,7 +9,7 @@ import SwiftUI
 
 enum openMarketRouter: NavigationRouter {
   case main
-  case detail(product: Product, favoriteProductService: FavoriteProductDataService)
+  case detail(product: Product, favoriteProductService: FavoriteProductDataProtocol)
   case modify(product: Product, myProductListService: ProductEditProtocol)
   var transition: NavigationTranisitionStyle {
     switch self {

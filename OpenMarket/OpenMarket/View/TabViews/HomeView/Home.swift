@@ -10,9 +10,9 @@ import SwiftUI
 struct Home: View {
   @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
-  let favoriteProductService: FavoriteProductDataService
+  let favoriteProductService: FavoriteProductDataProtocol
   
-  init(productListService: ProductListGetProtocol, favoriteProductService: FavoriteProductDataService) {
+  init(productListService: ProductListGetProtocol, favoriteProductService: FavoriteProductDataProtocol) {
     self.favoriteProductService = favoriteProductService
     self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
   }
