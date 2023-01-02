@@ -17,10 +17,10 @@ final class ModiftViewModel: ProductValidationViewModel {
   var imageURL: [ProductImage] = []
   let productService: ProductService
   var productId: Int
-  let allProductListService: AllProductListService
+  let allProductListService: ProductNetworkService
   private var cancellalbes = Set<AnyCancellable>()
   
-  init(id: Int, myProductListService: AllProductListService) {
+  init(id: Int, myProductListService: ProductNetworkService) {
     self.allProductListService = myProductListService
     self.productId = id
     self.productService = ProductService(id: id)

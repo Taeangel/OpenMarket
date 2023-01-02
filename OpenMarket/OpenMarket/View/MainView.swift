@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
   @StateObject var vm: MainViewModel = MainViewModel()
-  let productListService = AllProductListService()
+  let productListService = ProductNetworkService()
   let favoriteProductService = FavoriteProductDataService()
   
   init() {

@@ -12,10 +12,10 @@ final class HomeViewModel: ObservableObject {
   @Published var productList: [Product]?
   @Published var searchText: String = ""
   
-  weak var productListService: AllProductListService?
+  weak var productListService: ProductNetworkService?
   private var cancellalbes = Set<AnyCancellable>()
 
-  init(productListService: AllProductListService) {
+  init(productListService: ProductNetworkService) {
     self.productListService = productListService
     self.addSubscribers()
   }

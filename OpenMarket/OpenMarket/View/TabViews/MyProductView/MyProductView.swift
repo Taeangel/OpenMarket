@@ -11,7 +11,7 @@ struct MyProductView: View {
   @StateObject var vm: MyProductViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   
-  init(allPorductListService: AllProductListService) {
+  init(allPorductListService: ProductNetworkService) {
     self._vm = StateObject(wrappedValue: MyProductViewModel(allProductListService: allPorductListService))
   }
   

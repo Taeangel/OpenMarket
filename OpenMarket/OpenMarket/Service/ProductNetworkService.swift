@@ -9,8 +9,32 @@ import Foundation
 import Combine
 import SwiftUI
 
-final class AllProductListService {
-  
+protocol OpenMarketService {
+  var productList: [Product] { get }
+  var productListPublisher: Published<[Product]>.Publisher { get }
+  var myProductList: [Product] { get }
+  var myProductListPublisher: Published<[Product]>.Publisher { get }
+}
+
+protocol ProductGetable {
+  func getProduct()
+}
+
+protocol ProductPostable {
+  func postProduct(parms: ProductEncodeModel, images: [Data]) -> AnyPublisher<Data, NetworkError>
+}
+
+protocol ProductDeleteable {
+ func deleteProduct(endPoint: String) -> AnyPublisher<Data, NetworkError>
+}
+
+protocol Productodifyable {
+  func modifyProduct(id: Int, product: ProductEncodeModel) -> AnyPublisher<Data, NetworkError>
+}
+
+protocol OpenMarketCRUDable: ProductGetable ,ProductPostable ,ProductDeleteable ,Productodifyable { }
+
+final class ProductNetworkService: OpenMarketService, OpenMarketCRUDable {
   @Published var productList: [Product] = []
   var productListPublisher: Published<[Product]>.Publisher { return $productList }
   
@@ -48,7 +72,6 @@ final class AllProductListService {
         self?.productList += productListModel?.pages ?? []
       }
       .store(in: &cancellable)
-    
     pageNumber += 1
   }
   
@@ -80,11 +103,5 @@ final class AllProductListService {
         ApiManager.shared.requestPublisher(.getMyProductList())
       }
       .eraseToAnyPublisher()
-  }
-  
-  private func mergeProductLists() -> AnyPublisher<Data, NetworkError> {
-    Publishers.Merge(ApiManager.shared.requestPublisher(.getMyProductList()),
-                     ApiManager.shared.requestPublisher(.getProductList()))
-    .eraseToAnyPublisher()
   }
 }

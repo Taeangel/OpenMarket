@@ -12,7 +12,7 @@ struct AddProductView: View {
   @StateObject var vm: AddProductViewModel
   @State var showPicker: Bool = false
   
-  init(productListService: AllProductListService) {
+  init(productListService: ProductNetworkService) {
     self._vm = StateObject(wrappedValue: AddProductViewModel(productListService: productListService))
   }
   

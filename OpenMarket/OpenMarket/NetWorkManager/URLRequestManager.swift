@@ -12,7 +12,7 @@ import Foundation
 //https://openmarket.yagom-academy.kr/api/products == postProduct
 //https://openmarket.yagom-academy.kr/api/products?page_no=1&items_per_page=100&search_value=red  == get myProductList
 //https://openmarket.yagom-academy.kr/api/products/1610/archived == productDeletionURISearch
-//https://openmarket.yagom-academy.kr/api/products//api/products/MTYyNHw4M2I2YWNiNC04NTc4LTExZWQtYmUxMC03M2U3MGRlNWY4YjA= == deleteProduct
+//https://openmarket.yagom-academy.kr/api/products/api/products/MTYyNHw4M2I2YWNiNC04NTc4LTExZWQtYmUxMC03M2U3MGRlNWY4YjA= == deleteProduct
 //https://openmarket.yagom-academy.kr/api/products/1624 == modifyProduct
 
 // var identifier: String = "81da9d11-4b9d-11ed-a200-81a344d1e7cb"
@@ -116,7 +116,7 @@ enum OpenMarketRequestManager {
     }
   }
   
-  private var bodtData: Data? {
+  private var bodyData: Data? {
     switch self {
     case .getProductList:
       return nil
@@ -157,8 +157,8 @@ enum OpenMarketRequestManager {
       }
     }
     
-    if let bodtData  {
-      request.httpBody = bodtData
+    if let bodyData  {
+      request.httpBody = bodyData
     }
   
     return request
