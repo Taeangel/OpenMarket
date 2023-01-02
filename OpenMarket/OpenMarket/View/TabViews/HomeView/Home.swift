@@ -11,6 +11,10 @@ struct Home: View {
   @StateObject var vm: HomeViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   let favoriteProductService: FavoriteProductDataProtocol
+  let columns: [GridItem] = [
+    GridItem(.fixed(150), spacing: 50, alignment: nil),
+    GridItem(.fixed(150), spacing: 50, alignment: nil)
+  ]
   
   init(productListService: ProductListGetProtocol, favoriteProductService: FavoriteProductDataProtocol) {
     self.favoriteProductService = favoriteProductService
@@ -20,12 +24,12 @@ struct Home: View {
   var body: some View {
     VStack(spacing: 0) {
       title
-      
-      SearchBarView(seachText: $vm.searchText)
-      
+            
       cell
+      
     }
     .background(Color.theme.background)
+   
   }
 }
 
@@ -43,46 +47,10 @@ fileprivate extension Home {
       .frame(maxWidth: .infinity, alignment: .leading)
   }
   
-  private var search: some View {
-    HStack {
-      HStack(spacing: 12) {
-        Image(systemName: "magnifyingglass")
-          .resizable()
-          .renderingMode(.template)
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 25, height: 25)
-          .foregroundColor(Color.theme.black)
-        
-        TextField("Search", text: .constant(""))
-      }
-      .padding(.horizontal)
-      .padding(.vertical, 12)
-      .background{
-        RoundedRectangle(cornerRadius: 10,style: .continuous)
-          .fill(Color.theme.white)
-      }
-      
-      Button {
-        
-      } label: {
-        Image(systemName: "slider.horizontal.3")
-          .resizable()
-          .renderingMode(.template)
-          .aspectRatio(contentMode: .fit)
-          .foregroundColor(Color.theme.black)
-          .frame(width: 25, height: 25)
-          .padding(12)
-          .background{
-            RoundedRectangle(cornerRadius: 10,style: .continuous)
-              .fill(Color.theme.white)
-          }
-      }
-    }
-  }
-  
   private var cell: some View {
+    
     ScrollView(showsIndicators: false) {
-      LazyVStack {
+      LazyVGrid(columns: columns) {
         ForEach(vm.productList ?? []) { page in
           CardView(page: page)
             .onAppear {
@@ -100,16 +68,15 @@ fileprivate extension Home {
   
   @ViewBuilder
   func CardView(page: Product) -> some View {
-    HStack(spacing: 12) {
+    VStack(spacing: 12) {
       ImageView(url: page.thumbnailURL)
         .aspectRatio(contentMode: .fill)
-        .frame(width: 120)
+        .frame(width: 150, height: 150)
         .clipShape(
           RoundedRectangle(cornerRadius: 20)
         )
-        .padding(5)
       
-      VStack(alignment: .leading, spacing: 10) {
+      VStack(alignment: .leading) {
         Text(page.name ?? "")
           .fontWeight(.bold)
           .lineLimit(1)
@@ -132,11 +99,7 @@ fileprivate extension Home {
               .font(.title3.bold())
               .foregroundColor(Color.theme.red)
           }
-          
-          Spacer()
-          
         }
-        .offset(y: 20)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment:  .topLeading)
     }

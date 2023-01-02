@@ -152,7 +152,7 @@ fileprivate extension MyProductView {
               }
               
               Button {
-                coordinator.show(.modify(product: page, myProductListService: vm.allProductListService))
+                coordinator.show(.modify(product: page, myProductListService: vm.myProductListService))
               } label: {
                 Text("수정")
                   .font(.callout)

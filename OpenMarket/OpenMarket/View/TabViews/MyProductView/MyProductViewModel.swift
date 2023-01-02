@@ -15,18 +15,18 @@ final class MyProductViewModel: ObservableObject {
   @Published var isPostSuccess: Bool = false
   @Published var alertMessage: String = ""
   
-  var allProductListService: ProductEditProtocol
+  var myProductListService: ProductEditProtocol
   private var cancellable = Set<AnyCancellable>()
 
   let openMarketNetwork = ApiManager(session: URLSession.shared)
 
   init(allProductListService: ProductEditProtocol) {
-    self.allProductListService = allProductListService
+    self.myProductListService = allProductListService
     self.addSubscribers()
   }
   
   private func addSubscribers() {
-    allProductListService.myProductListPublisher
+    myProductListService.myProductListPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] returnedProductList in
         guard let self = self else { return }
@@ -53,13 +53,13 @@ final class MyProductViewModel: ObservableObject {
       } receiveValue: { [weak self] data in
         guard let self = self else { return }
         guard let deleteURL = String(data: data, encoding: .utf8) else { return }
-        self.allProductListService.deleteProduct(endPoint: deleteURL)
+        self.myProductListService.deleteProduct(endPoint: deleteURL)
           .sink { completion in
             print(completion)
           } receiveValue: { [weak self] returnedProductList in
             guard let self = self else { return }
             let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-            self.allProductListService.myProductList = productListModel?.pages ?? []
+            self.myProductListService.myProductList = productListModel?.pages ?? []
             self.listUpdata()
           }
           .store(in: &self.cancellable)
@@ -71,7 +71,7 @@ final class MyProductViewModel: ObservableObject {
     openMarketNetwork.requestPublisher(.getProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.allProductListService.productList = productListModel?.pages ?? []
+        self?.myProductListService.productList = productListModel?.pages ?? []
       }
       .store(in: &cancellable)
   }
