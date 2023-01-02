@@ -10,19 +10,29 @@ import Combine
 import SwiftUI
 
 final class ImageService {
-
   @Published var image: UIImage? = nil
   private var subscription: AnyCancellable?
   private var url: URL
+  private let fileManager = LocalFileManager()
+  private let cacheManager = CacheManager()
+  private let imageName: String
+  private var folerName = "Product_images"
   private let imageDownloader = ImageProvider()
   
   init(url: URL) {
     self.url = url
-    getProductImage()
+    self.imageName = url.description
+    self.getProductImage()
   }
 
   private func getProductImage() {
-    downloadProductImage()
+    if let cachedImage = cacheManager.get(key: imageName) {
+      image = cachedImage
+    } else if let fileSavedImage = fileManager.getImage(imageName: imageName, folderName: folerName) {
+      image = fileSavedImage
+    } else {
+      downloadProductImage()
+    }
   }
 
   private func downloadProductImage() {
@@ -36,6 +46,8 @@ final class ImageService {
       }, receiveValue: { [weak self] returnedImage in
         guard let self = self, let returnedImage = returnedImage else { return }
         self.image = returnedImage
+        self.cacheManager.add(key: self.imageName, value: returnedImage)
+        self.fileManager.saveImage(image: returnedImage, imageName: self.imageName, folderName: self.folerName)
         self.subscription?.cancel()
       })
   }
