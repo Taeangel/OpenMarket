@@ -14,6 +14,9 @@ final class AddProductViewModel: ProductValidationViewModel {
   @Published var showAlert: Bool = false
   @Published var isPostSuccess: Bool = false
   @Published var alertMessage: String = ""
+  let openMarketNetwork = ApiManager(session: URLSession.shared)
+
+  
   init(productListService: ProductPostProtocol) {
     self.allProductListService = productListService
     super.init()
@@ -45,13 +48,12 @@ final class AddProductViewModel: ProductValidationViewModel {
         self?.listUpdata()
       })
       .store(in: &cancellable)
-    
     cleanAddView()
   }
   
   private func listUpdata() {
-    ApiManager.shared.requestPublisher(.getProductList())
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+    openMarketNetwork.requestPublisher(.getProductList())
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.allProductListService?.productList = productListModel?.pages ?? []
       }

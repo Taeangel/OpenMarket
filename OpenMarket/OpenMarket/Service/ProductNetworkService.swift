@@ -49,20 +49,22 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
   
   var pageNumber = 2
   
+  let openMarketNetwork = ApiManager(session: URLSession.shared)
+  
   init() {
     initMethod()
   }
   
   private func initMethod() {
-    ApiManager.shared.requestPublisher(.getProductList())
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+    openMarketNetwork.requestPublisher(.getProductList())
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.productList = productListModel?.pages ?? []
       }
       .store(in: &cancellable)
     
-    ApiManager.shared.requestPublisher(.getMyProductList())
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+    openMarketNetwork.requestPublisher(.getProductList())
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.myProductList = productListModel?.pages ?? []
       }
@@ -70,8 +72,8 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
   }
   
   func getProduct() {
-    ApiManager.shared.requestPublisher(.getProductList(page_no: pageNumber))
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+    openMarketNetwork.requestPublisher(.getProductList(page_no: pageNumber))
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.productList += productListModel?.pages ?? []
       }
@@ -82,9 +84,9 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
   func postProduct(parms: ProductEncodeModel, images: [Data]) -> AnyPublisher<Data, NetworkError> {
     pageNumber = 2
     
-    return ApiManager.shared.requestPublisher(.postProduct(params: parms, images: images))
-      .flatMap { _ in
-        ApiManager.shared.requestPublisher(.getMyProductList())
+    return openMarketNetwork.requestPublisher(.postProduct(params: parms, images: images))
+      .flatMap { [weak self] _ in
+        (self?.openMarketNetwork.requestPublisher(.getMyProductList()))!
       }
       .eraseToAnyPublisher()
   }
@@ -92,9 +94,9 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
   func deleteProduct(endPoint: String) -> AnyPublisher<Data, NetworkError> {
     pageNumber = 2
     
-    return ApiManager.shared.requestPublisher(.deleteProduct(endpoint: endPoint))
-      .flatMap { _ in
-        ApiManager.shared.requestPublisher(.getMyProductList())
+    return openMarketNetwork.requestPublisher(.deleteProduct(endpoint: endPoint))
+      .flatMap { [weak self] _ in
+        (self?.openMarketNetwork.requestPublisher(.getMyProductList()))!
       }
       .eraseToAnyPublisher()
   }
@@ -102,9 +104,9 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
   func modifyProduct(id: Int, product: ProductEncodeModel) -> AnyPublisher<Data, NetworkError> {
     pageNumber = 2
     
-    return ApiManager.shared.requestPublisher(.modifyProduct(id: id, product: product))
-      .flatMap { _ in
-        ApiManager.shared.requestPublisher(.getMyProductList())
+    return openMarketNetwork.requestPublisher(.modifyProduct(id: id, product: product))
+      .flatMap { [weak self] _ in
+        (self?.openMarketNetwork.requestPublisher(.getMyProductList()))!
       }
       .eraseToAnyPublisher()
   }

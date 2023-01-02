@@ -19,7 +19,8 @@ final class ModiftViewModel: ProductValidationViewModel {
   var productId: Int
   var allProductListService: ProductEditProtocol
   private var cancellalbes = Set<AnyCancellable>()
-  
+  let openMarketNetwork = ApiManager(session: URLSession.shared)
+
   init(id: Int, myProductListService: ProductEditProtocol) {
     self.allProductListService = myProductListService
     self.productId = id
@@ -70,8 +71,8 @@ final class ModiftViewModel: ProductValidationViewModel {
   }
   
   private func listUpdata() {
-    ApiManager.shared.requestPublisher(.getProductList())
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+    openMarketNetwork.requestPublisher(.getProductList())
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.allProductListService.productList = productListModel?.pages ?? []
       }

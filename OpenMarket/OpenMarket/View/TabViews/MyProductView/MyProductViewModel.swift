@@ -18,6 +18,8 @@ final class MyProductViewModel: ObservableObject {
   var allProductListService: ProductEditProtocol
   private var cancellable = Set<AnyCancellable>()
 
+  let openMarketNetwork = ApiManager(session: URLSession.shared)
+
   init(allProductListService: ProductEditProtocol) {
     self.allProductListService = allProductListService
     self.addSubscribers()
@@ -34,7 +36,7 @@ final class MyProductViewModel: ObservableObject {
   }
   
   func deleteProduct(_ id: Int) {
-    ApiManager.shared.requestPublisher(.productDeletionURISearch(id: id))
+    openMarketNetwork.requestPublisher(.productDeletionURISearch(id: id))
       .receive(on: DispatchQueue.main)
       .sink { [weak self] completion in
         guard let self = self else { return }
@@ -66,8 +68,8 @@ final class MyProductViewModel: ObservableObject {
   }
   
   private func listUpdata() {
-    ApiManager.shared.requestPublisher(.getProductList())
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProductList in
+    openMarketNetwork.requestPublisher(.getProductList())
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
         self?.allProductListService.productList = productListModel?.pages ?? []
       }

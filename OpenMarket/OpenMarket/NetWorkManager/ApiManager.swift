@@ -8,15 +8,24 @@
 import Foundation
 import Combine
 
-struct ApiManager {
-  static let shared = ApiManager()
-  private init() {}
+protocol OpenMarketProtocol {
+  func requestPublisher(_ request: OpenMarketRequestManager) -> AnyPublisher<Data, NetworkError>
+}
+
+protocol Requestable {
+  func request(_ request: OpenMarketRequestManager) -> AnyPublisher<Data, NetworkError>
+}
+
+struct ApiManager: OpenMarketProtocol {
+  
+  let session: Requestable
+  
+  init(session: Requestable) {
+    self.session = session
+  }
   
   func requestPublisher(_ request: OpenMarketRequestManager) -> AnyPublisher<Data, NetworkError> {
-    return URLSession.shared.dataTaskPublisher(for: request.urlRequest)
-      .tryMap(filterURLData)
-      .mapError(convertToNetworkError)
-      .eraseToAnyPublisher()
+    return session.request(request)
   }
   
   func handleCompletion(completion: Subscribers.Completion<NetworkError>) {
@@ -29,7 +38,13 @@ struct ApiManager {
   }
 }
 
-extension ApiManager {
+extension URLSession: Requestable {
+  func request(_ request: OpenMarketRequestManager) -> AnyPublisher<Data, NetworkError> {
+    return URLSession.shared.dataTaskPublisher(for: request.urlRequest)
+      .tryMap(filterURLData)
+      .mapError(convertToNetworkError)
+      .eraseToAnyPublisher()
+  }
   
   private func convertToNetworkError(err: Error) -> NetworkError {
     if let error = err as? NetworkError {
