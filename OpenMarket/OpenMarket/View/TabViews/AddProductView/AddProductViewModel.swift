@@ -10,11 +10,11 @@ import SwiftUI
 import Combine
 
 final class AddProductViewModel: ProductValidationViewModel {
-  private weak var allProductListService: ProductNetworkService?
+  private var allProductListService: ProductPostProtocol?
   @Published var showAlert: Bool = false
   @Published var isPostSuccess: Bool = false
   @Published var alertMessage: String = ""
-  init(productListService: ProductNetworkService) {
+  init(productListService: ProductPostProtocol) {
     self.allProductListService = productListService
     super.init()
     self.addSubscriber()

@@ -10,9 +10,9 @@ import Combine
 import SwiftUI
 
 protocol OpenMarketService {
-  var productList: [Product] { get }
+  var productList: [Product] { get set }
   var productListPublisher: Published<[Product]>.Publisher { get }
-  var myProductList: [Product] { get }
+  var myProductList: [Product] { get set }
   var myProductListPublisher: Published<[Product]>.Publisher { get }
 }
 
@@ -28,13 +28,17 @@ protocol ProductDeleteable {
  func deleteProduct(endPoint: String) -> AnyPublisher<Data, NetworkError>
 }
 
-protocol Productodifyable {
+protocol ProductModifyable {
   func modifyProduct(id: Int, product: ProductEncodeModel) -> AnyPublisher<Data, NetworkError>
 }
 
-protocol OpenMarketCRUDable: ProductGetable ,ProductPostable ,ProductDeleteable ,Productodifyable { }
+protocol OpenMarketCRUDable: ProductGetable, ProductPostable, ProductDeleteable, ProductModifyable { }
 
-final class ProductNetworkService: OpenMarketService, OpenMarketCRUDable {
+protocol ProductListGetProtocol: OpenMarketService, ProductGetable {}
+protocol ProductPostProtocol: OpenMarketService, ProductPostable {}
+protocol ProductEditProtocol: OpenMarketService, ProductDeleteable, ProductModifyable {}
+
+final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, ProductEditProtocol {
   @Published var productList: [Product] = []
   var productListPublisher: Published<[Product]>.Publisher { return $productList }
   

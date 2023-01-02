@@ -15,10 +15,10 @@ final class MyProductViewModel: ObservableObject {
   @Published var isPostSuccess: Bool = false
   @Published var alertMessage: String = ""
   
-  let allProductListService: ProductNetworkService
+  var allProductListService: ProductEditProtocol
   private var cancellable = Set<AnyCancellable>()
 
-  init(allProductListService: ProductNetworkService) {
+  init(allProductListService: ProductEditProtocol) {
     self.allProductListService = allProductListService
     self.addSubscribers()
   }

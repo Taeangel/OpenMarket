@@ -12,7 +12,7 @@ struct Home: View {
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   let favoriteProductService: FavoriteProductDataService
   
-  init(productListService: ProductNetworkService, favoriteProductService: FavoriteProductDataService) {
+  init(productListService: ProductListGetProtocol, favoriteProductService: FavoriteProductDataService) {
     self.favoriteProductService = favoriteProductService
     self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
   }
