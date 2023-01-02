@@ -14,12 +14,14 @@ final class OpenMarketNetwork_Test: XCTestCase {
   var cancellable = Set<AnyCancellable>()
   var product: ProductModel? = nil
   var productList: [Product] = []
-  
+  var openMarketNetwork: ApiManager!
+
   override func setUpWithError() throws {
-    
+    openMarketNetwork = ApiManager(session: URLSession.shared)
   }
   
   override func tearDownWithError() throws {
+    openMarketNetwork = nil
     product = nil
     productList = []
     cancellable.removeAll()
@@ -30,8 +32,8 @@ final class OpenMarketNetwork_Test: XCTestCase {
     let expectation = XCTestExpectation(description: "개별조회")
     let id = 10
     //then
-    ApiManager.shared.requestPublisher(.getProduct(id))
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProduct in
+    openMarketNetwork.requestPublisher(.getProduct(id))
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProduct in
         self?.product = try? JSONDecoder().decode(ProductModel.self, from: returnedProduct)
         expectation.fulfill()
       }
@@ -47,9 +49,9 @@ final class OpenMarketNetwork_Test: XCTestCase {
     let page_no = 1
     let items_per_page = 20
     //then
-    ApiManager.shared.requestPublisher(.getProductList(page_no: page_no, items_per_page: items_per_page))
+    openMarketNetwork.requestPublisher(.getProductList(page_no: page_no, items_per_page: items_per_page))
     
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProduct in
+      .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProduct in
         self?.productList = try! JSONDecoder().decode(ProductListModel.self, from: returnedProduct).pages!
         expectation.fulfill()
       }
@@ -73,9 +75,9 @@ final class OpenMarketNetwork_Test: XCTestCase {
     let imageData = UIImage(systemName: "pencil")?.jpegData(compressionQuality: 0.1) ?? Data()
      
     //then
-    ApiManager.shared.requestPublisher(.postProduct(params: product, images: [imageData]))
+    openMarketNetwork.requestPublisher(.postProduct(params: product, images: [imageData]))
       .receive(on: DispatchQueue.main)
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] data in
+      .sink(receiveCompletion:openMarketNetwork.handleCompletion) { [weak self] data in
         self?.product = try? JSONDecoder().decode(ProductModel.self, from: data)
         expectation.fulfill()
       }
@@ -97,9 +99,9 @@ final class OpenMarketNetwork_Test: XCTestCase {
                                      stock: 5)
      
     //then
-    ApiManager.shared.requestPublisher(.modifyProduct(id: 1683, product: product))
+    openMarketNetwork.requestPublisher(.modifyProduct(id: 1683, product: product))
       .receive(on: DispatchQueue.main)
-      .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] data in
+      .sink(receiveCompletion:openMarketNetwork.handleCompletion) { [weak self] data in
         self?.product = try? JSONDecoder().decode(ProductModel.self, from: data)
         expectation.fulfill()
       }
