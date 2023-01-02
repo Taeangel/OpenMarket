@@ -8,13 +8,14 @@
 import Foundation
 import Combine
 
+protocol ProductProtocol {
+  var product: ProductModel? { get set }
+  var savedEntitiesPublisher: Published<ProductModel?>.Publisher { get }
+}
+
 final class ProductService {
   
   @Published var product: ProductModel?
-  
-  var productValue: Published<ProductModel?> {
-    return _product
-  }
   
   var productPublisher: Published<ProductModel?>.Publisher {
     return $product
@@ -26,10 +27,10 @@ final class ProductService {
     getProduct(id)
   }
   
-  func getProduct(_ id: Int) {
+  private func getProduct(_ id: Int) {
     ApiManager.shared.requestPublisher(.getProduct(id))
       .sink(receiveCompletion: ApiManager.shared.handleCompletion) { [weak self] returnedProduct in
-        self?.product = try! JSONDecoder().decode(ProductModel.self, from: returnedProduct)
+        self?.product = try? JSONDecoder().decode(ProductModel.self, from: returnedProduct)
       }
       .store(in: &cancellable)
   }

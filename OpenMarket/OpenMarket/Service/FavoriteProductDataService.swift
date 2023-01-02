@@ -17,7 +17,7 @@ protocol FavoriteProductDataProtocol {
 final class FavoriteProductDataService: FavoriteProductDataProtocol {
   
   @Published var savedEntities: [ProductEntity] = []
-  
+
   var savedEntitiesPublisher: Published<[ProductEntity]>.Publisher {
     return $savedEntities
   }

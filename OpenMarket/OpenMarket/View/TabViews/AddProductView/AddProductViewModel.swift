@@ -45,6 +45,7 @@ final class AddProductViewModel: ProductValidationViewModel {
         self?.listUpdata()
       })
       .store(in: &cancellable)
+    
     cleanAddView()
   }
   

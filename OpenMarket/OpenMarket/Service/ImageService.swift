@@ -18,14 +18,14 @@ final class ImageService {
   
   init(url: URL) {
     self.url = url
-    getCoinImage()
+    getProductImage()
   }
 
-  private func getCoinImage() {
-      downloadCoinImage()
+  private func getProductImage() {
+    downloadProductImage()
   }
 
-  private func downloadCoinImage() {
+  private func downloadProductImage() {
     subscription = imageDownloader.download(url: url)
       .tryMap({ data -> UIImage? in
         return UIImage(data: data)
