@@ -87,11 +87,13 @@ fileprivate extension MyProductView {
           HStack {
             VStack(alignment: .leading) {
               Text(page.priceString)
+                .strikethrough()
+                .foregroundColor(Color.theme.failColor)
                 .font(.title3)
                 .foregroundColor(Color.theme.black)
               
               Text(page.discountedPriceString)
-                .font(.title3.bold())
+                .font(.title.bold())
                 .foregroundColor(Color.theme.red)
             }
             

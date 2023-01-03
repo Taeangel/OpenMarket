@@ -92,8 +92,9 @@ fileprivate extension DetailView {
             .lineLimit(1)
           
           Text("\(vm.product?.moneySign ?? "")\(vm.product?.price ?? 0)")
-            .font(.title.bold())
-            .foregroundColor(Color.theme.black)
+            .font(.title3.bold())
+            .strikethrough()
+            .foregroundColor(Color.theme.failColor)
           
           Text("\(vm.product?.moneySign ?? "")\(vm.product?.discountedPrice ?? 0)")
             .font(.title.bold())
@@ -137,9 +138,7 @@ fileprivate extension DetailView {
         .foregroundColor(Color.theme.secondaryText)
         .multilineTextAlignment(.leading)
         .padding(.vertical)
-      
-      
-      
+
       Spacer(minLength: 5)
       
       Rectangle()

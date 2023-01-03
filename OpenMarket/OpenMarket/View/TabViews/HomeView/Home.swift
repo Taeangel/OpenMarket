@@ -157,7 +157,7 @@ fileprivate extension Home {
           .foregroundColor(Color.theme.black)
         
         
-        Text(page.pageDescription ?? "")
+        Text("설명: \(page.pageDescription ?? "")")
           .font(.system(size: 12))
           .lineLimit(2)
           .foregroundColor(Color.theme.secondaryText)
@@ -166,11 +166,12 @@ fileprivate extension Home {
         HStack {
           VStack(alignment: .leading) {
             Text(page.priceString)
+              .strikethrough()
               .font(.title3)
-              .foregroundColor(Color.theme.black)
+              .foregroundColor(Color.theme.failColor)
             
             Text(page.discountedPriceString)
-              .font(.title3.bold())
+              .font(.title.bold())
               .foregroundColor(Color.theme.red)
           }
         }
@@ -220,11 +221,12 @@ fileprivate extension Home {
           HStack {
             VStack(alignment: .leading) {
               Text(page.priceString)
+                .strikethrough()
+                .foregroundColor(Color.theme.failColor)
                 .font(.title3)
-                .foregroundColor(Color.theme.black)
               
               Text(page.discountedPriceString)
-                .font(.title3.bold())
+                .font(.title.bold())
                 .foregroundColor(Color.theme.red)
             }
 
