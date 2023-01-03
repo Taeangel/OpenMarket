@@ -32,11 +32,9 @@ final class HomeViewModel: ObservableObject {
   }
   
   func searchProductList() {
-    print(searchText)
     productListService?.getSearchProductList(searchValue: searchText)
       .receive(on: RunLoop.main)
       .sink(receiveCompletion: { completion in
-        print(completion)
       }, receiveValue: { [weak self] returnedProductList in
         guard let self = self else { return }
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
