@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 final class HomeViewModel: ObservableObject {
   @Published var productList: [Product]?

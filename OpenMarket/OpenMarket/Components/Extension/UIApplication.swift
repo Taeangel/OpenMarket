@@ -13,7 +13,6 @@ extension UIApplication {
   }
 }
 
-import SwiftUI
  
 extension UIApplication {
     func hideKeyboard() {

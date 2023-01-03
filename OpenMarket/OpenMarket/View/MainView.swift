@@ -21,21 +21,25 @@ struct MainView: View {
       Home(productListService: productListService, favoriteProductService: favoriteProductService)
         .tag(Tab.home)
         .setUpTab()
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+      
       
       AddProductView(productListService: productListService)
         .tag(Tab.productRegister)
         .setUpTab()
+        .ignoresSafeArea(.keyboard, edges: .bottom)
       
       
       MyProductView(productListService: productListService)
         .tag(Tab.myProductList)
         .setUpTab()
+        .ignoresSafeArea(.keyboard, edges: .bottom)
       
     }
     .overlay(alignment: .bottom) {
       CustomTabBar(currentTab: $vm.currentTab)
     }
-    .onAppear(perform:  UIApplication.shared.hideKeyboard)
+    .onAppear(perform: UIApplication.shared.hideKeyboard)
   }
 }
 

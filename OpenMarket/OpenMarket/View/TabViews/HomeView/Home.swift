@@ -7,9 +7,12 @@
 
 import SwiftUI
 
+
 struct Home: View {
-  @StateObject var vm: HomeViewModel
-  @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
+ 
+  @StateObject private var vm: HomeViewModel
+  @EnvironmentObject private var coordinator: Coordinator<openMarketRouter>
+  @State private var isShowSearchView: Bool = true
   let favoriteProductService: FavoriteProductDataProtocol
   
   let columns: [GridItem] = [
@@ -29,15 +32,20 @@ struct Home: View {
       search
     
       if vm.searchText.isEmpty {
-        cell
+        if isShowSearchView {
+          cell
+        } else {
+          searchText
+        }
       } else {
         searchCell
       }
-      
       Spacer()
     }
     .background(Color.theme.background)
-   
+    .onTapGesture {
+      UIApplication.shared.hideKeyboard()
+    }
   }
 }
 
@@ -66,6 +74,13 @@ fileprivate extension Home {
           .foregroundColor(Color.theme.black)
         
         TextField("Search", text: $vm.searchText)
+          .onTapGesture(perform: {
+            isShowSearchView = false
+          })
+          .onSubmit {
+            isShowSearchView = true
+            vm.searchProductList()
+          }
       }
       .padding(.horizontal)
       .padding(.vertical, 12)
@@ -75,9 +90,9 @@ fileprivate extension Home {
       }
       
       Button {
-        vm.searchProductList()
+        vm.searchText = ""
       } label: {
-        Image(systemName: "slider.horizontal.3")
+        Image(systemName: "x.square")
           .resizable()
           .renderingMode(.template)
           .aspectRatio(contentMode: .fit)
@@ -94,6 +109,11 @@ fileprivate extension Home {
     .padding()
   }
     
+  private var searchText: some View {
+    Text("원하는 상품을 검색하세요!!!")
+      .font(.title2)
+      .foregroundColor(Color.theme.secondaryText)
+  }
   
   private var cell: some View {
     ScrollView(showsIndicators: false) {
