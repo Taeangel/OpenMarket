@@ -41,7 +41,12 @@ struct ProductListModel: Codable {
   let pageNo, itemsPerPage, totalCount, offset: Int?
   let limit, lastPage: Int?
   let hasNext, hasPrev: Bool?
-  var pages: [Product]?
+  var product: [Product]?
+  
+  enum CodingKeys: String, CodingKey {
+    case pageNo, itemsPerPage, totalCount, offset, limit, lastPage, hasNext, hasPrev
+    case product = "pages"
+  }
 }
 
 // MARK: - Page
@@ -73,7 +78,6 @@ struct Product: Codable, Identifiable, Equatable {
     }
     return "$\(discountedPrice)"
   }
-  
   
   enum CodingKeys: String, CodingKey {
     case id

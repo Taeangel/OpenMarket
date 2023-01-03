@@ -44,7 +44,7 @@ final class AddProductViewModel: ProductValidationViewModel {
         }
       }, receiveValue: { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.allProductListService?.myProductList = productListModel?.pages ?? []
+        self?.allProductListService?.myProductList = productListModel?.product ?? []
         self?.listUpdata()
       })
       .store(in: &cancellable)
@@ -55,7 +55,7 @@ final class AddProductViewModel: ProductValidationViewModel {
     openMarketNetwork.requestPublisher(.getProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.allProductListService?.productList = productListModel?.pages ?? []
+        self?.allProductListService?.productList = productListModel?.product ?? []
       }
       .store(in: &cancellable)
   }

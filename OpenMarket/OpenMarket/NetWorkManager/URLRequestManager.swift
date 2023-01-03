@@ -25,6 +25,7 @@ enum OpenMarketRequestManager {
   case getProduct(_ id: Int)
   case postProduct(params: ProductEncodeModel, images: [Data])
   case getMyProductList(page_no: Int = 1, items_per_page: Int = 10, search_value: String = "red")
+  case getSearchProductList(page_no: Int = 1, items_per_page: Int = 10, search_value: String = "")
   case productDeletionURISearch(id: Int)
   case deleteProduct(endpoint: String)
   case modifyProduct(id: Int, product: ProductEncodeModel)
@@ -49,6 +50,8 @@ enum OpenMarketRequestManager {
       return "\(endpoint)"
     case let .modifyProduct(id, _):
       return "/api/products/\(id)/"
+    case .getSearchProductList:
+      return "/api/products?"
     }
   }
   
@@ -68,6 +71,8 @@ enum OpenMarketRequestManager {
       return .delete
     case .modifyProduct:
       return .patch
+    case .getSearchProductList:
+      return .get
     }
   }
   
@@ -94,6 +99,12 @@ enum OpenMarketRequestManager {
       return nil
     case .modifyProduct:
       return nil
+    case let .getSearchProductList(page_no, items_per_page, search_value):
+      var params: [String: Any] = [:]
+      params["page_no"] = page_no
+      params["items_per_page"] = items_per_page
+      params["search_value"] = search_value
+      return params
     }
   }
   
@@ -113,6 +124,8 @@ enum OpenMarketRequestManager {
       return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb"]
     case .modifyProduct:
       return ["identifier": "81da9d11-4b9d-11ed-a200-81a344d1e7cb", "Content-Type" : "application/json"]
+    case .getSearchProductList:
+      return nil
     }
   }
   
@@ -136,6 +149,8 @@ enum OpenMarketRequestManager {
       return nil
     case let .modifyProduct(_, product):
       return try? JSONEncoder().encode(product)
+    case .getSearchProductList:
+      return nil
     }
   }
   

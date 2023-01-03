@@ -19,7 +19,6 @@ enum openMarketRouter: NavigationRouter {
       return .push
     case .modify:
       return .presentModally
-      
     }
   }
   

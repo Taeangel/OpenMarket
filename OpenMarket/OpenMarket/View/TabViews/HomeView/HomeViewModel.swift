@@ -11,6 +11,7 @@ import Combine
 final class HomeViewModel: ObservableObject {
   @Published var productList: [Product]?
   @Published var searchText: String = ""
+  @Published var searchedProductList: [Product]?
   
   let productListService: ProductListGetProtocol?
   private var cancellalbes = Set<AnyCancellable>()
@@ -27,6 +28,20 @@ final class HomeViewModel: ObservableObject {
         guard let self = self else { return }
         self.productList = returnedProductList
       }
+      .store(in: &cancellalbes)
+  }
+  
+  func searchProductList() {
+    print(searchText)
+    productListService?.getSearchProductList(searchValue: searchText)
+      .receive(on: RunLoop.main)
+      .sink(receiveCompletion: { completion in
+        print(completion)
+      }, receiveValue: { [weak self] returnedProductList in
+        guard let self = self else { return }
+        let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
+        self.searchedProductList = productListModel?.product ?? []
+      })
       .store(in: &cancellalbes)
   }
 }

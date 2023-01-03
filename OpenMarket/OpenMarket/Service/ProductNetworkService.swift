@@ -18,6 +18,7 @@ protocol OpenMarketService {
 
 protocol ProductGetable {
   func getProduct()
+  func getSearchProductList(searchValue: String) -> AnyPublisher<Data, NetworkError>
 }
 
 protocol ProductPostable {
@@ -59,23 +60,28 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
     openMarketNetwork.requestPublisher(.getProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.productList = productListModel?.pages ?? []
+        self?.productList = productListModel?.product ?? []
       }
       .store(in: &cancellable)
     
     openMarketNetwork.requestPublisher(.getMyProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.myProductList = productListModel?.pages ?? []
+        self?.myProductList = productListModel?.product ?? []
       }
       .store(in: &cancellable)
+  }
+  
+  func getSearchProductList(searchValue: String) -> AnyPublisher<Data, NetworkError> {
+    openMarketNetwork.requestPublisher(.getSearchProductList(search_value: searchValue))
+      .eraseToAnyPublisher()
   }
   
   func getProduct() {
     openMarketNetwork.requestPublisher(.getProductList(page_no: pageNumber))
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.productList += productListModel?.pages ?? []
+        self?.productList += productListModel?.product ?? []
       }
       .store(in: &cancellable)
     pageNumber += 1

@@ -64,7 +64,7 @@ final class ModiftViewModel: ProductValidationViewModel {
       }receiveValue: { [weak self] returnedProductList in
         guard let self = self else { return }
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self.allProductListService.myProductList = productListModel?.pages ?? []
+        self.allProductListService.myProductList = productListModel?.product ?? []
         self.listUpdata()
       }
       .store(in: &self.cancellalbes)
@@ -74,7 +74,7 @@ final class ModiftViewModel: ProductValidationViewModel {
     openMarketNetwork.requestPublisher(.getProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.allProductListService.productList = productListModel?.pages ?? []
+        self?.allProductListService.productList = productListModel?.product ?? []
       }
       .store(in: &cancellable)
   }

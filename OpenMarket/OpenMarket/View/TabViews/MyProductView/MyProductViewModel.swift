@@ -59,7 +59,7 @@ final class MyProductViewModel: ObservableObject {
           } receiveValue: { [weak self] returnedProductList in
             guard let self = self else { return }
             let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-            self.myProductListService.myProductList = productListModel?.pages ?? []
+            self.myProductListService.myProductList = productListModel?.product ?? []
             self.listUpdata()
           }
           .store(in: &self.cancellable)
@@ -71,7 +71,7 @@ final class MyProductViewModel: ObservableObject {
     openMarketNetwork.requestPublisher(.getProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.myProductListService.productList = productListModel?.pages ?? []
+        self?.myProductListService.productList = productListModel?.product ?? []
       }
       .store(in: &cancellable)
   }

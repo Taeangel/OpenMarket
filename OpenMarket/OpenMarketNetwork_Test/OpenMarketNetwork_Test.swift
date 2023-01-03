@@ -57,7 +57,7 @@ final class OpenMarketNetwork_Test: XCTestCase {
     openMarketNetwork.requestPublisher(.getProductList(page_no: page_no, items_per_page: items_per_page))
     
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProduct in
-        self?.productList = try! JSONDecoder().decode(ProductListModel.self, from: returnedProduct).pages!
+        self?.productList = try! JSONDecoder().decode(ProductListModel.self, from: returnedProduct).product!
         expectation.fulfill()
       }
       .store(in: &cancellable)
