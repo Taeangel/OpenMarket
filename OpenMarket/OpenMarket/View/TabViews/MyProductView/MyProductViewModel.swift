@@ -15,10 +15,9 @@ final class MyProductViewModel: ObservableObject {
   @Published var isPostSuccess: Bool = false
   @Published var alertMessage: String = ""
   
-  var myProductListService: ProductEditProtocol
+  private var myProductListService: ProductEditProtocol
   private var cancellable = Set<AnyCancellable>()
-
-  let openMarketNetwork = ApiManager(session: URLSession.shared)
+  private let openMarketNetwork = ApiManager(session: URLSession.shared)
 
   init(allProductListService: ProductEditProtocol) {
     self.myProductListService = allProductListService

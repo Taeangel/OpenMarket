@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ModiftView: View {
-  @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
+  @EnvironmentObject private var coordinator: Coordinator<openMarketRouter>
   @StateObject var vm: ModifyViewModel
   
   var body: some View {

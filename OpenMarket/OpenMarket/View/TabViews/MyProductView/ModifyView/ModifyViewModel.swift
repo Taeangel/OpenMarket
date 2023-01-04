@@ -15,11 +15,11 @@ final class ModifyViewModel: ProductValidationViewModel {
   @Published var isPostSuccess: Bool = false
   @Published var alertMessage: String = ""
   var imageURL: [ProductImage] = []
-  let productService: ProductService
-  var productId: Int
-  var allProductListService: ProductEditProtocol
+  private let productService: ProductService
+  private var productId: Int
+  private var allProductListService: ProductEditProtocol
   private var cancellalbes = Set<AnyCancellable>()
-  let openMarketNetwork = ApiManager(session: URLSession.shared)
+  private let openMarketNetwork = ApiManager(session: URLSession.shared)
 
   init(id: Int, myProductListService: ProductEditProtocol) {
     self.allProductListService = myProductListService

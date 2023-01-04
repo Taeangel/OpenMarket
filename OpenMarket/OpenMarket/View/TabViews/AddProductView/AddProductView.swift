@@ -10,7 +10,7 @@ import Photos
 
 struct AddProductView: View {
   @StateObject var vm: AddProductViewModel
-  @State var showPicker: Bool = false
+  @State private var showPicker: Bool = false
   
   var body: some View {
     ZStack {

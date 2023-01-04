@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MyProductView: View {
   @StateObject var vm: MyProductViewModel
-  @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
+  @EnvironmentObject private var coordinator: Coordinator<openMarketRouter>
   
   var body: some View {
     ZStack {

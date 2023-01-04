@@ -33,8 +33,6 @@ protocol ProductModifyable {
   func modifyProduct(id: Int, product: ProductEncodeModel) -> AnyPublisher<Data, NetworkError>
 }
 
-protocol OpenMarketCRUDable: ProductGetable, ProductPostable, ProductDeleteable, ProductModifyable { }
-
 protocol ProductListGetProtocol: OpenMarketService, ProductGetable {}
 protocol ProductPostProtocol: OpenMarketService, ProductPostable {}
 protocol ProductEditProtocol: OpenMarketService, ProductDeleteable, ProductModifyable {}
@@ -45,12 +43,10 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
   
   @Published var myProductList: [Product] = []
   var myProductListPublisher: Published<[Product]>.Publisher { return $myProductList }
-  
   private var cancellable = Set<AnyCancellable>()
-  
   var pageNumber = 2
   
-  let openMarketNetwork = ApiManager(session: URLSession.shared)
+  private let openMarketNetwork = ApiManager(session: URLSession.shared)
   
   init() {
     initMethod()

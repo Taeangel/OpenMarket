@@ -14,8 +14,8 @@ final class DetailViewModel: ObservableObject {
   @Published var cartCount: Int = 0
   @Published var totolPrice: Int = 0
   @Published var favoriteProduct: Bool = false
-  let favoriteProductService: FavoriteProductDataProtocol
-  let productService: ProductService
+  private let favoriteProductService: FavoriteProductDataProtocol
+  private  let productService: ProductService
   private var cancellalbes = Set<AnyCancellable>()
   
   init(id: Int, favoriteProductService: FavoriteProductDataProtocol) {

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct DetailView: View {
-  
-  @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
+  @EnvironmentObject private var coordinator: Coordinator<openMarketRouter>
   @StateObject var vm: DetailViewModel
   
   var body: some View {
