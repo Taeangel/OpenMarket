@@ -120,6 +120,7 @@ fileprivate extension ModiftView {
   private var registerButtonView: some View {
     Button {
       vm.modifyProduct()
+      coordinator.dismiss()
     } label: {
       Text("상품수정")
     }

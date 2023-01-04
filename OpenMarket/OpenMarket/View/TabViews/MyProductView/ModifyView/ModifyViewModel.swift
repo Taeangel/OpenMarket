@@ -17,12 +17,11 @@ final class ModifyViewModel: ProductValidationViewModel {
   var imageURL: [ProductImage] = []
   private let productService: ProductService
   private var productId: Int
-  private var allProductListService: ProductEditProtocol
-  private var cancellalbes = Set<AnyCancellable>()
+  private var productListService: ProductEditProtocol
   private let openMarketNetwork = ApiManager(session: URLSession.shared)
 
   init(id: Int, myProductListService: ProductEditProtocol) {
-    self.allProductListService = myProductListService
+    self.productListService = myProductListService
     self.productId = id
     self.productService = ProductService(id: id)
     super.init()
@@ -44,11 +43,11 @@ final class ModifyViewModel: ProductValidationViewModel {
         self.imageURL = returnedProduct.images
         self.images.append(UIImage())
       }
-      .store(in: &cancellalbes)
+      .store(in: &cancellable)
   }
    
   func modifyProduct() {
-    allProductListService.modifyProduct(id: productId, product: makeProduct())
+    productListService.modifyProduct(id: productId, product: makeProduct())
       .receive(on: DispatchQueue.main)
       .sink{ [weak self] completion in
         guard let self = self else { return }
@@ -65,22 +64,22 @@ final class ModifyViewModel: ProductValidationViewModel {
       }receiveValue: { [weak self] returnedProductList in
         guard let self = self else { return }
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self.allProductListService.myProductList = productListModel?.product ?? []
+        self.productListService.myProductList = productListModel?.product ?? []
         self.listUpdata()
       }
-      .store(in: &self.cancellalbes)
+      .store(in: &cancellable)
   }
   
   private func listUpdata() {
     openMarketNetwork.requestPublisher(.getProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.allProductListService.productList = productListModel?.product ?? []
+        self?.productListService.productList = productListModel?.product ?? []
       }
       .store(in: &cancellable)
   }
   
   deinit {
-    cancellalbes.removeAll()
+    cancellable.removeAll()
   }
 }

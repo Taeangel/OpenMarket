@@ -15,17 +15,17 @@ final class MyProductViewModel: ObservableObject {
   @Published var isPostSuccess: Bool = false
   @Published var alertMessage: String = ""
   
-  private var myProductListService: ProductEditProtocol
+  private var productListService: ProductEditProtocol
   private var cancellable = Set<AnyCancellable>()
   private let openMarketNetwork = ApiManager(session: URLSession.shared)
 
   init(allProductListService: ProductEditProtocol) {
-    self.myProductListService = allProductListService
+    self.productListService = allProductListService
     self.addSubscribers()
   }
   
   private func addSubscribers() {
-    myProductListService.myProductListPublisher
+    productListService.myProductListPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] returnedProductList in
         guard let self = self else { return }
@@ -52,13 +52,13 @@ final class MyProductViewModel: ObservableObject {
       } receiveValue: { [weak self] data in
         guard let self = self else { return }
         guard let deleteURL = String(data: data, encoding: .utf8) else { return }
-        self.myProductListService.deleteProduct(endPoint: deleteURL)
+        self.productListService.deleteProduct(endPoint: deleteURL)
           .sink { _ in
             
           } receiveValue: { [weak self] returnedProductList in
             guard let self = self else { return }
             let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-            self.myProductListService.myProductList = productListModel?.product ?? []
+            self.productListService.myProductList = productListModel?.product ?? []
             self.listUpdata()
           }
           .store(in: &self.cancellable)
@@ -70,8 +70,12 @@ final class MyProductViewModel: ObservableObject {
     openMarketNetwork.requestPublisher(.getProductList())
       .sink(receiveCompletion: openMarketNetwork.handleCompletion) { [weak self] returnedProductList in
         let productListModel = try? JSONDecoder().decode(ProductListModel.self, from: returnedProductList)
-        self?.myProductListService.productList = productListModel?.product ?? []
+        self?.productListService.productList = productListModel?.product ?? []
       }
       .store(in: &cancellable)
+  }
+  
+  deinit {
+    cancellable.removeAll()
   }
 }
