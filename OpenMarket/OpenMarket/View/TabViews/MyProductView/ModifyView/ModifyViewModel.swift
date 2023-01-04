@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-final class ModiftViewModel: ProductValidationViewModel {
+final class ModifyViewModel: ProductValidationViewModel {
   @Published var showDetailView: Bool = false
   @Published var showAlert: Bool = false
   @Published var isPostSuccess: Bool = false

@@ -11,10 +11,6 @@ struct MyProductView: View {
   @StateObject var vm: MyProductViewModel
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
   
-  init(productListService: ProductEditProtocol) {
-    self._vm = StateObject(wrappedValue: MyProductViewModel(allProductListService: productListService))
-  }
-  
   var body: some View {
     ZStack {
       ScrollView(.vertical, showsIndicators: false) {
@@ -115,7 +111,7 @@ fileprivate extension MyProductView {
               }
               
               Button {
-                coordinator.show(.modify(product: page, myProductListService: vm.myProductListService))
+                coordinator.show(.modify(product: page))
               } label: {
                 Text("수정")
                   .font(.callout)

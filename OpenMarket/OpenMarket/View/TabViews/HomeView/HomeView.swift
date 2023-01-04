@@ -8,22 +8,17 @@
 import SwiftUI
 
 
-struct Home: View {
+struct HomeView: View {
  
-  @StateObject private var vm: HomeViewModel
+  @StateObject var vm: HomeViewModel
   @EnvironmentObject private var coordinator: Coordinator<openMarketRouter>
+  @EnvironmentObject private var viewModelFactory: ViewFactory
   @State private var isShowSearchView: Bool = true
-  let favoriteProductService: FavoriteProductDataProtocol
   
   let columns: [GridItem] = [
     GridItem(.fixed(150), spacing: 50, alignment: nil),
     GridItem(.fixed(150), spacing: 50, alignment: nil)
   ]
-  
-  init(productListService: ProductListGetProtocol, favoriteProductService: FavoriteProductDataProtocol) {
-    self.favoriteProductService = favoriteProductService
-    self._vm = StateObject(wrappedValue: HomeViewModel(productListService: productListService))
-  }
   
   var body: some View {
     VStack(spacing: 0) {
@@ -55,7 +50,7 @@ struct Home_Previews: PreviewProvider {
   }
 }
 
-fileprivate extension Home {
+fileprivate extension HomeView {
   private var title: some View {
     Text("OpenMarket")
       .font(.title.bold())
@@ -186,7 +181,7 @@ fileprivate extension Home {
     }
     .onTapGesture {
       withAnimation(.easeInOut) {
-        coordinator.show(.detail(product: page, favoriteProductService: favoriteProductService))
+        coordinator.show(.detail(product: page))
       }
     }
     .padding(.bottom, 6)

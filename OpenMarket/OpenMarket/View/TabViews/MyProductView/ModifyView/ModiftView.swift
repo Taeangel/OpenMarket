@@ -8,13 +8,8 @@
 import SwiftUI
 
 struct ModiftView: View {
-  
   @EnvironmentObject var coordinator: Coordinator<openMarketRouter>
-  @StateObject var vm: ModiftViewModel
-  
-  init(product: Product, myProductListService: ProductEditProtocol) {
-    self._vm = StateObject(wrappedValue: ModiftViewModel(id: product.id ?? 0, myProductListService: myProductListService))
-  }
+  @StateObject var vm: ModifyViewModel
   
   var body: some View {
     top

@@ -10,7 +10,7 @@ import SwiftUI
 class Coordinator<Router: NavigationRouter>: ObservableObject {
   let navigationController: UINavigationController
   let startingRoute: Router?
-  
+ 
   init(navigationController: UINavigationController = .init(), startingRoute: Router? = nil) {
     self.navigationController = navigationController
     self.startingRoute = startingRoute

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct MainView: View {
   @StateObject var vm: MainViewModel = MainViewModel()
-  let productListService = ProductNetworkService()
-  let favoriteProductService = FavoriteProductDataService()
+  @EnvironmentObject var viewFactory: ViewFactory
   
   init() {
     UITabBar.appearance().isHidden = true
@@ -18,19 +17,19 @@ struct MainView: View {
   
   var body: some View {
     TabView(selection: $vm.currentTab) {
-      Home(productListService: productListService, favoriteProductService: favoriteProductService)
+      viewFactory.makeHomeViewModel()
         .tag(Tab.home)
         .setUpTab()
         .ignoresSafeArea(.keyboard, edges: .bottom)
       
       
-      AddProductView(productListService: productListService)
+      viewFactory.makeAddProductView()
         .tag(Tab.productRegister)
         .setUpTab()
         .ignoresSafeArea(.keyboard, edges: .bottom)
       
       
-      MyProductView(productListService: productListService)
+      viewFactory.makeMyProductView()
         .tag(Tab.myProductList)
         .setUpTab()
         .ignoresSafeArea(.keyboard, edges: .bottom)

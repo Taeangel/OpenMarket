@@ -16,7 +16,6 @@ final class AddProductViewModel: ProductValidationViewModel {
   @Published var alertMessage: String = ""
   let openMarketNetwork = ApiManager(session: URLSession.shared)
 
-  
   init(productListService: ProductPostProtocol) {
     self.allProductListService = productListService
     super.init()
@@ -24,7 +23,7 @@ final class AddProductViewModel: ProductValidationViewModel {
   }
   
   private func convertImageToData() -> [Data] {
-    return images.map { $0.jpegData(compressionQuality: 0.1) ?? Data() }
+    return images.map { $0.jpegData(compressionQuality: 0.5) ?? Data() }
   }
   
   func postProduct() {
