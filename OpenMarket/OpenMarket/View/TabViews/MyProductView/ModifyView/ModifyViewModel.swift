@@ -49,13 +49,14 @@ final class ModifyViewModel: ProductValidationViewModel {
    
   func modifyProduct() {
     allProductListService.modifyProduct(id: productId, product: makeProduct())
+      .receive(on: DispatchQueue.main)
       .sink{ [weak self] completion in
         guard let self = self else { return }
         switch completion {
         case .finished:
           self.showAlert = true
           self.isPostSuccess = true
-          self.alertMessage = "Delete에 성공했습니다!"
+          self.alertMessage = "수정에 성공했습니다!"
         case let .failure(error):
           self.showAlert = true
           self.isPostSuccess = false

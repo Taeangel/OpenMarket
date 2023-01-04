@@ -43,7 +43,7 @@ final class MyProductViewModel: ObservableObject {
         case .finished:
           self.showAlert = true
           self.isPostSuccess = true
-          self.alertMessage = "Delete에 성공했습니다!"
+          self.alertMessage = "삭제에 성공했습니다!"
         case let .failure(error):
           self.showAlert = true
           self.isPostSuccess = false
