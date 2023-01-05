@@ -24,6 +24,7 @@ struct CustomAlertView: View {
   @Binding var show: Bool
   let isSuccess: Bool
   let completion: String
+  let okButton: () -> ()
   
   var body: some View {
     ZStack(alignment: Alignment(horizontal: .trailing, vertical: .top)) {
@@ -40,6 +41,7 @@ struct CustomAlertView: View {
           withAnimation {
             show.toggle()
           }
+          okButton()
         },
                label: {
           Text("확인")

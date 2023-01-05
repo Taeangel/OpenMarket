@@ -53,12 +53,18 @@ class ProductValidationViewModel: ObservableObject {
           return "설명을 입력해 주세요"
         }
       }
-      .assign(to: \.informationError, on: self)
+      .sink { [weak self] returnError in
+        guard let self = self else { return }
+        self.informationError = returnError
+      }
       .store(in: &cancellable)
     
     isFormValidPublsher
       .receive(on: RunLoop.main)
-      .assign(to: \.postButtonisValid, on: self)
+      .sink { [weak self] returnValue in
+        guard let self = self else { return }
+        self.postButtonisValid = returnValue
+      }
       .store(in: &cancellable)
   }
   

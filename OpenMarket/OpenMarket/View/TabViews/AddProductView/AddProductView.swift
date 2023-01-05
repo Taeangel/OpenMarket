@@ -25,7 +25,9 @@ struct AddProductView: View {
       }
       
       if vm.showAlert {
-        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage)
+        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage) {
+          
+        }
       }
     }
     .popupImagePocker(show: $showPicker) { assets in

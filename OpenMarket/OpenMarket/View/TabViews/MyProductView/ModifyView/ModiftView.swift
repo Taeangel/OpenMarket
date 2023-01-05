@@ -24,7 +24,9 @@ struct ModiftView: View {
       }
       
       if vm.showAlert {
-        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage)
+        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage) {
+          coordinator.dismiss()
+        }
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -120,7 +122,6 @@ fileprivate extension ModiftView {
   private var registerButtonView: some View {
     Button {
       vm.modifyProduct()
-      coordinator.dismiss()
     } label: {
       Text("상품수정")
     }

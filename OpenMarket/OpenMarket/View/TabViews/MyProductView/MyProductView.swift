@@ -25,7 +25,9 @@ struct MyProductView: View {
       }
       
       if vm.showAlert {
-        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage)
+        CustomAlertView(show: $vm.showAlert, isSuccess: vm.isPostSuccess, completion: vm.alertMessage) {
+          
+        }
       }
     }
     .background(Color.theme.background)
