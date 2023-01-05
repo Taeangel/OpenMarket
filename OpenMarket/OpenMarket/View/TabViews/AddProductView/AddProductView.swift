@@ -96,7 +96,7 @@ fileprivate extension AddProductView {
         }
       }
       
-      TextField("할인할 가격", text:$vm.discountPrice )
+      TextField("할인가", text:$vm.discountPrice )
       TextField("상품수량", text: $vm.stock)
       TextField("제품설명", text: $vm.productDescription)
     } header: {
