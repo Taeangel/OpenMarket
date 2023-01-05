@@ -65,18 +65,26 @@ struct Product: Codable, Identifiable, Equatable {
     return url
   }
   
+  var moneySign: String {
+    if currency == "USD" {
+      return "$"
+    } else {
+      return "₩"
+    }
+  }
+  
   var priceString: String {
     guard let price = price else {
       return ""
     }
-    return "$\(price)"
+    return "\(moneySign)\(price)"
   }
   
   var discountedPriceString: String {
     guard let discountedPrice = discountedPrice else {
       return ""
     }
-    return "$\(discountedPrice)"
+    return "\(moneySign)\(discountedPrice)"
   }
   
   enum CodingKeys: String, CodingKey {
