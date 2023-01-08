@@ -67,6 +67,11 @@
 		86F049FA29581EE5007CC401 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F049F929581EE5007CC401 /* UIApplication.swift */; };
 		86F7420F296548540030C293 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F7420E296548540030C293 /* DIContainer.swift */; };
 		86F742112965485C0030C293 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F742102965485C0030C293 /* ViewFactory.swift */; };
+		86F74221296B30440030C293 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F74220296B30440030C293 /* Protocols.swift */; };
+		86F74223296B30700030C293 /* ProductGetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F74222296B30700030C293 /* ProductGetable.swift */; };
+		86F74225296B30920030C293 /* ProductPostable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F74224296B30920030C293 /* ProductPostable.swift */; };
+		86F74227296B30B20030C293 /* ProductDeleteable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F74226296B30B20030C293 /* ProductDeleteable.swift */; };
+		86F74229296B30C90030C293 /* ProductModifyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F74228296B30C90030C293 /* ProductModifyable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,6 +163,11 @@
 		86F049F929581EE5007CC401 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		86F7420E296548540030C293 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		86F742102965485C0030C293 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
+		86F74220296B30440030C293 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		86F74222296B30700030C293 /* ProductGetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGetable.swift; sourceTree = "<group>"; };
+		86F74224296B30920030C293 /* ProductPostable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPostable.swift; sourceTree = "<group>"; };
+		86F74226296B30B20030C293 /* ProductDeleteable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDeleteable.swift; sourceTree = "<group>"; };
+		86F74228296B30C90030C293 /* ProductModifyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModifyable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,7 +321,7 @@
 		8607E58A2954FBE400254FCD /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				8607E58B2954FBF100254FCD /* ProductNetworkService.swift */,
+				86F7421F296B302B0030C293 /* ProductNetworkService */,
 				86CF5145295D174200337343 /* FavoriteProductDataService.swift */,
 				8607E5A929551AC600254FCD /* ProductService.swift */,
 				8607E5BD295561C000254FCD /* ImageService.swift */,
@@ -494,6 +504,19 @@
 			path = ViewModelFactory;
 			sourceTree = "<group>";
 		};
+		86F7421F296B302B0030C293 /* ProductNetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				8607E58B2954FBF100254FCD /* ProductNetworkService.swift */,
+				86F74220296B30440030C293 /* Protocols.swift */,
+				86F74224296B30920030C293 /* ProductPostable.swift */,
+				86F74222296B30700030C293 /* ProductGetable.swift */,
+				86F74226296B30B20030C293 /* ProductDeleteable.swift */,
+				86F74228296B30C90030C293 /* ProductModifyable.swift */,
+			);
+			path = ProductNetworkService;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -659,6 +682,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86F049FA29581EE5007CC401 /* UIApplication.swift in Sources */,
+				86F74225296B30920030C293 /* ProductPostable.swift in Sources */,
 				8607E55D2954F18300254FCD /* MainView.swift in Sources */,
 				8683769F29595A0A00D81755 /* Cyrrency.swift in Sources */,
 				867E9E262956C90D00C8698D /* DetailView.swift in Sources */,
@@ -675,6 +699,7 @@
 				86CF5146295D174200337343 /* FavoriteProductDataService.swift in Sources */,
 				8607E56B2954F4EF00254FCD /* URLRequestManager.swift in Sources */,
 				86F049F829581EBA007CC401 /* SearchView.swift in Sources */,
+				86F74227296B30B20030C293 /* ProductDeleteable.swift in Sources */,
 				868376992958626F00D81755 /* ImagePickerViewModel.swift in Sources */,
 				8607E5A8295519A800254FCD /* ProductModel.swift in Sources */,
 				8683769B295862BA00D81755 /* View.swift in Sources */,
@@ -683,6 +708,8 @@
 				8607E5782954F6AC00254FCD /* AppRouter.swift in Sources */,
 				868376952958623100D81755 /* ImagePickerView.swift in Sources */,
 				869890CA295E929900429129 /* AlertView.swift in Sources */,
+				86F74229296B30C90030C293 /* ProductModifyable.swift in Sources */,
+				86F74221296B30440030C293 /* Protocols.swift in Sources */,
 				8607E5B22955371A00254FCD /* ButtomCurve.swift in Sources */,
 				868376A429596CD900D81755 /* Product.swift in Sources */,
 				8607E5712954F68F00254FCD /* NavigationTranisitionStyle.swift in Sources */,
@@ -693,6 +720,7 @@
 				86F7420F296548540030C293 /* DIContainer.swift in Sources */,
 				86CF514D295D56F500337343 /* ProductValidationViewModel.swift in Sources */,
 				869891142962BC3E00429129 /* MockSession.swift in Sources */,
+				86F74223296B30700030C293 /* ProductGetable.swift in Sources */,
 				86F049F329581B6F007CC401 /* AddProductViewModel.swift in Sources */,
 				8607E5BC29554F7B00254FCD /* HomeView.swift in Sources */,
 				86989146296312E300429129 /* NSCacheManager.swift in Sources */,
