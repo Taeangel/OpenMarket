@@ -88,7 +88,7 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
     
     return openMarketNetwork.requestPublisher(.postProduct(params: parms, images: images))
       .flatMap { [weak self] _ in
-        (self?.openMarketNetwork.requestPublisher(.getMyProductList()))!
+        self?.openMarketNetwork.requestPublisher(.getMyProductList()) ?? Empty(completeImmediately: true).eraseToAnyPublisher()
       }
       .eraseToAnyPublisher()
   }
@@ -98,7 +98,7 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
     
     return openMarketNetwork.requestPublisher(.deleteProduct(endpoint: endPoint))
       .flatMap { [weak self] _ in
-        (self?.openMarketNetwork.requestPublisher(.getMyProductList()))!
+        self?.openMarketNetwork.requestPublisher(.getMyProductList()) ?? Empty(completeImmediately: true).eraseToAnyPublisher()
       }
       .eraseToAnyPublisher()
   }
@@ -108,7 +108,7 @@ final class ProductNetworkService: ProductListGetProtocol, ProductPostProtocol, 
     
     return openMarketNetwork.requestPublisher(.modifyProduct(id: id, product: product))
       .flatMap { [weak self] _ in
-        (self?.openMarketNetwork.requestPublisher(.getMyProductList()))!
+        self?.openMarketNetwork.requestPublisher(.getMyProductList()) ?? Empty(completeImmediately: true).eraseToAnyPublisher()
       }
       .eraseToAnyPublisher()
   }
