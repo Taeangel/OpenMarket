@@ -60,8 +60,6 @@ private func addSubscribers(_ id: Int) {
     }
 ```
 
-
-
 3. coredata 시점문제
 코어데이터를 활용하여 좋아하는 상품 기능을 만들었습니다 그러나 coredata Service 와 바로 바인딩을 해주었더니 coredata에 있는 정보를 바로 업데이트를 하지 않는 문제가있어 시간을 살짝 걸어주는 걸로 해결했습니다.
 
@@ -79,7 +77,6 @@ favoriteProductService.savedEntitiesPublisher
       })
       .store(in: &cancellalbes)
 ```
-
 4. flatMap 강제업래핑
 Empty(completeImmediately: true).eraseToAnyPublisher() 으로 처리
 ```swift
@@ -116,8 +113,6 @@ func test_ApiManager_requestPublisher_productDeletionURISearch_shouldBeWork() {
   }
 
 ```
-
-
 6. URLRequestManager
 URLRequset를 enum으로 만들어 편하게 사용하도록 구조를 설계 하였습니다.
 ```swift
@@ -288,7 +283,6 @@ enum OpenMarketRequestManager {
 프로토콜 확장을 통하여 기능별로 분리하였습니다.
 
 ```swift
-
 protocol OpenMarketService: AnyObject {
   var productList: [Product] { get set }
   var productListPublisher: Published<[Product]>.Publisher { get }
@@ -358,7 +352,6 @@ extension ProductPostable {
       .eraseToAnyPublisher()
   }
 }
-
 ```
 
 8. 수정화면과 추가화면의 같은기능
@@ -492,8 +485,6 @@ class ProductValidationViewModel: ObservableObject {
       .eraseToAnyPublisher()
   }
 }
-
-
 ```
 
 
