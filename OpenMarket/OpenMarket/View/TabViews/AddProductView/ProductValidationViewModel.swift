@@ -130,7 +130,7 @@ class ProductValidationViewModel: ObservableObject {
       }
       .eraseToAnyPublisher()
   }
-  
+
   private var isFormValidPublsher: AnyPublisher<Bool, Never> {
     isProductInformationVailidPublisher
       .map { $0 == ProductStatus.valid }
